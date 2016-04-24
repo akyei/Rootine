@@ -2,8 +2,6 @@ package com.team16umd.routineapp;
 
 import android.content.Intent;
 
-import java.util.Map;
-
 /**
  * Created by thekyei on 4/20/16.
  */
@@ -21,13 +19,5 @@ public class ReminderItem {
     //TODO: Create a Reminder constructor with the appropriate fields as parementers
     public ReminderItem(){
 
-    }
-
-    public Map<String, Object> toMap(){
-        //TODO create a method that converts a Reminder Item to a Map/JSON in order to input it
-        //into firebase.
-
-        //Stub
-        return null;
     }
 }

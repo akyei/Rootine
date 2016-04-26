@@ -45,7 +45,7 @@ public class ReminderItemAdapter extends BaseAdapter {
 
         /* If toFirebase is set to true, then add the item to Firebase as well */
         if (toFirebase){
-
+            //TODO - add some kind of firebase functionality?
             mReminderItems.add(item);
         } else {
             mReminderItems.add(item);

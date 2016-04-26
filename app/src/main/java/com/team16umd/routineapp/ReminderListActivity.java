@@ -57,6 +57,7 @@ public class ReminderListActivity extends ListActivity {
     // List Adapter for this class
     private ReminderItemAdapter mAdapter;
 
+    static final int ADD_REMINDER_REQUEST = 42;
     //TODO create a requestCode for adding a Reminder
 
     @Override
@@ -94,15 +95,20 @@ public class ReminderListActivity extends ListActivity {
         } else {
             //TODO Handle the case when token is invalid (i.e return to LoginActivity)
         }
-
-
+        mAdapter = new ReminderItemAdapter(getApplicationContext());
+        getListView().setAdapter(mAdapter);
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ADD_REMINDER_REQUEST && resultCode == RESULT_OK){
+            ReminderItem nRi = new ReminderItem(data);
 
+            //TODO- change behavior when FireBase connection exists
+            mAdapter.add(nRi, false);
+        }
     }
+
 
     @Override
     public void onDestroy() {

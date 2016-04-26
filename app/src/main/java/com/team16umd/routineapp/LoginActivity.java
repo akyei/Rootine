@@ -1,13 +1,10 @@
 package com.team16umd.routineapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -33,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
     public static final String TAG = "LOGIN ACTIVITY";
     private Button mStartButton;
     private LoginButton mloginButton;
@@ -169,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                 mloginButton.setVisibility(View.VISIBLE);
             }
             this.mAuthData = authData;
-            supportInvalidateOptionsMenu();
+            //supportInvalidateOptionsMenu();
         }
     }
 

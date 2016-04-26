@@ -1,10 +1,14 @@
 package com.team16umd.routineapp;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
+import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -16,7 +20,6 @@ import java.util.List;
  * Created by thekyei on 4/20/16.
  */
 
-//TODO Fully implement the adapter
 public class ReminderItemAdapter extends BaseAdapter {
 
     private final Context mContext;
@@ -65,13 +68,18 @@ public class ReminderItemAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return mReminderItems.size() ;
     }
 
     public View getView(int position, View convertView, ViewGroup parent){
-        //TODO Implement the getView method for the adapter.
+        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        final ReminderItem reminderItem = (ReminderItem) mReminderItems.get(position);
 
-        return null;
+        RelativeLayout reminderLayout = (RelativeLayout) mInflater.inflate(R.layout.reminder_item, parent);
+
+        //TODO- populate the fields of the reminder layout
+
+        return reminderLayout;
     }
 }

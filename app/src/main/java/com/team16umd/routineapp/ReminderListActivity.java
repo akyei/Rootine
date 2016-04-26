@@ -65,7 +65,7 @@ public class ReminderListActivity extends ListActivity {
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
         getListView().setFooterDividersEnabled(true);
-        //TODO add footer to list view (Define xml file for the footer)
+        getListView().addFooterView(findViewById(R.id.footer_view));
         setContentView(R.layout.activity_reminder_list);
 
 

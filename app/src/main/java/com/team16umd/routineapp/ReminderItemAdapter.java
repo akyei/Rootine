@@ -77,8 +77,15 @@ public class ReminderItemAdapter extends BaseAdapter {
         final ReminderItem reminderItem = (ReminderItem) mReminderItems.get(position);
 
         RelativeLayout reminderLayout = (RelativeLayout) mInflater.inflate(R.layout.reminder_item, parent);
+        reminderLayout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
 
-        //TODO- populate the fields of the reminder layout
+                //TODO- either do a color change on the View or check a box in the layout
+            }
+        });
+
+        //TODO- populate additional fields of the reminder layout (as fields are added to the ReminderItem class)
 
         return reminderLayout;
     }

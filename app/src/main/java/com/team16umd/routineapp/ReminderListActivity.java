@@ -15,6 +15,18 @@ import com.facebook.login.widget.ProfilePictureView;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.util.Date;
+
 
  /*
     TODO Implement the list activity. The list activity should show all Reminder items for the
@@ -54,11 +66,12 @@ public class ReminderListActivity extends ListActivity {
     private Firebase mFirebase;
     private Firebase mUserRef;
     private String mUid;
+    private static final String FILE_NAME = "ReminderAppData.txt";
     // List Adapter for this class
     private ReminderItemAdapter mAdapter;
 
+    // requestCode for adding a reminder;
     static final int ADD_REMINDER_REQUEST = 42;
-    //TODO create a requestCode for adding a Reminder
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +122,26 @@ public class ReminderListActivity extends ListActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveItems();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadItems();
+    }
+
+    private void loadItems() {
+        //TODO- load items from FireBase (or locally as a fallback?)
+    }
+
+    // Save ToDoItems to file
+    private void saveItems() {
+        //TODO- store items in Firebase (or locally as a fallback)
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

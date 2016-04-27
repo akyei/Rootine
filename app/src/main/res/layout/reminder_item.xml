@@ -7,7 +7,7 @@
         android:id="@+id/reminder_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="<text not initialized>"
+        android:text="text not initialized"
         />
     <!-- TODO: add views for additional reminder fields -->
 

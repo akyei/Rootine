@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.facebook.login.widget.ProfilePictureView
+        android:id="@+id/feed_profile_pic"
+        android:layout_width="@dimen/com_facebook_profilepictureview_preset_size_normal"
+        android:layout_height="@dimen/com_facebook_profilepictureview_preset_size_normal">
+
+    </com.facebook.login.widget.ProfilePictureView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User's name"
+        android:id="@+id/feed_user_name"
+        android:layout_toRightOf="@+id/feed_profile_pic"
+        android:textSize="30dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/feed_user_name"
+        android:layout_toRightOf="@+id/feed_profile_pic"
+        android:id="@+id/feed_user_text"
+        android:textSize="20dp"
+        android:text="Lorem ipsum dolor est, place holder text ftw"
+        />
+
+</RelativeLayout>

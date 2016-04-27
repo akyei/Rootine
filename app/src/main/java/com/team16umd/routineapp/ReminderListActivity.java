@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Button;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -14,6 +16,18 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.widget.ProfilePictureView;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.util.Date;
 
 
  /*
@@ -53,22 +67,45 @@ public class ReminderListActivity extends ListActivity {
     private ProfilePictureView mProfilePic;
     private Firebase mFirebase;
     private Firebase mUserRef;
+    private Button mBadgeButton, mSocialButton, mHistoryButton;
     private String mUid;
+    private static final String FILE_NAME = "ReminderAppData.txt";
     // List Adapter for this class
     private ReminderItemAdapter mAdapter;
 
-    //TODO create a requestCode for adding a Reminder
+    // requestCode for adding a reminder;
+    static final int ADD_REMINDER_REQUEST = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
-        getListView().setFooterDividersEnabled(true);
-        getListView().addFooterView(findViewById(R.id.footer_view));
         setContentView(R.layout.activity_reminder_list);
+        getListView().setFooterDividersEnabled(true);
+        TextView footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view, null);
+        getListView().addFooterView(footerView);
 
 
+        mBadgeButton = (Button) findViewById(R.id.badge_button);
+        mSocialButton = (Button) findViewById(R.id.social_button);
+        mHistoryButton = (Button) findViewById(R.id.graph_button);
+
+        mBadgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReminderListActivity.this, ViewBadgesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        footerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addRoutineIntent = new Intent(ReminderListActivity.this, AddReminderActivity.class);
+                startActivityForResult(addRoutineIntent, ADD_REMINDER_REQUEST);
+            }
+        });
 
         mProfilePic = (ProfilePictureView) findViewById(R.id.profile_pic);
         /*
@@ -94,16 +131,40 @@ public class ReminderListActivity extends ListActivity {
         } else {
             //TODO Handle the case when token is invalid (i.e return to LoginActivity)
         }
-
-
+        mAdapter = new ReminderItemAdapter(getApplicationContext());
+        getListView().setAdapter(mAdapter);
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ADD_REMINDER_REQUEST && resultCode == RESULT_OK){
+            ReminderItem nRi = new ReminderItem(data);
 
+            //TODO- change behavior when FireBase connection exists
+            mAdapter.add(nRi, false);
+        }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveItems();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadItems();
+    }
+
+    private void loadItems() {
+        //TODO- load items from FireBase (or locally as a fallback?)
+    }
+
+    // Save ToDoItems to file
+    private void saveItems() {
+        //TODO- store items in Firebase (or locally as a fallback)
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

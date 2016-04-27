@@ -7,4 +7,10 @@
     <string name="firebase_url">https://routinereminder.firebaseio.com/users/</string>
     <string name="add_habit_footer">Add a new habit!</string>
     <string name="placeholder_text">(field not initialized)</string>
+    <string name="description_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nullam in consectetur metus. Maecenas bibendum ante nisl, et malesuada arcu iaculis nec.
+        Nam elementum massa euismod nunc suscipit aliquet. Etiam nec tristique nulla.
+        Mauris lacinia velit lectus, vitae blandit orci ultrices hendrerit.
+        Nunc vulputate elit turpis, ut condimentum nisi congue eu.
+        </string>
 </resources>

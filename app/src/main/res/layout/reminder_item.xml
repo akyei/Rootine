@@ -2,13 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/reminder_item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <EditText
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+
+    <TextView
         android:id="@+id/reminder_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="text not initialized"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_toLeftOf="@+id/completion_status_icon"
+        android:text="Text not initialized"
+
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Small synopsis of reminder"
+        android:layout_below="@+id/reminder_item_text"
+        android:layout_toLeftOf="@+id/completion_status_icon"
+        android:textColor="@color/black"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/completion_status_icon"
+        android:background="@drawable/checkmark"
+        android:layout_alignParentEnd="true"/>
     <!-- TODO: add views for additional reminder fields -->
 
 </RelativeLayout>

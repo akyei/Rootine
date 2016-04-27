@@ -10,6 +10,10 @@ import java.util.Map;
 
 //TODO Define the XML layout for the ReminderItems (Each Row in the ListView)
 public class ReminderItem {
+    public final static String TITLE = "title";
+    public final static String DESCRIPTION = "description";
+    public final static String NOTIFICATION = "notification";
+    public final static String FEED = "feed";
 
     //TODO: Add private/public/protected fields as needed for the ReminderItem
 
@@ -21,6 +25,15 @@ public class ReminderItem {
     //TODO: Create a Reminder constructor with the appropriate fields as parementers
     public ReminderItem(){
 
+    }
+
+    public static Intent packageIntent(Intent data, String title, String description, boolean notification, boolean feed){
+        data.putExtra(TITLE, title);
+        data.putExtra(DESCRIPTION, description);
+        data.putExtra(NOTIFICATION, notification);
+        data.putExtra(FEED, feed);
+
+        return data;
     }
 
     public Map<String, Object> toMap(){

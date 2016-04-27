@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/white"
-    tools:context="com.team16umd.routineapp.ReminderListActivity">
+    tools:context="com.team16umd.routineapp.SocialFeedActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentTop="true"
         android:id="@+id/top_bar"
         android:background="@color/app_main">
 
@@ -39,43 +38,16 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_centerVertical="true"
             android:id="@+id/profile_pic"
             ></com.facebook.login.widget.ProfilePictureView>
     </RelativeLayout>
-    <include layout="@layout/content_reminder_list" />
 
-    <!-- Footer of the page, has buttons leading to other activities -->
-
-    <RelativeLayout
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/bottom_bar"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:background="#FFFFFF">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/badge_button"
-            android:text="See Badges"
-            android:textAllCaps="false"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/social_button"
-            android:layout_toRightOf="@+id/badge_button"
-            android:text="Social Feed"
-            android:textAllCaps="false"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/graph_button"
-            android:layout_toRightOf="@+id/social_button"
-            android:text="Your History"
-            android:textAllCaps="false"/>
+        android:layout_height="wrap_content">
 
-
-    </RelativeLayout>
+    </ListView>
 
 </RelativeLayout>

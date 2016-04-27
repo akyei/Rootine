@@ -1,8 +1,12 @@
 package com.team16umd.routineapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.facebook.FacebookSdk;
 import com.firebase.client.AuthData;
@@ -13,6 +17,11 @@ public class AddReminderActivity extends Activity {
     private Firebase mUserRef;
     private AuthData mAuthData;
     private String mUid;
+    private boolean mNotification;
+    private boolean mFeed;
+    private EditText mTitle;
+    private EditText mDescription;
+
 
     //TODO Define XML layout for AddReminder in res/layout/activity_add_reminder
     //TODO See UILab for inspiration
@@ -61,5 +70,30 @@ public class AddReminderActivity extends Activity {
             mUid = mAuthData.getUid();
             mUserRef = new Firebase(getResources().getString(R.string.firebase_url) + mUid);
         }
+
+        Button submit = (Button) findViewById(R.id.submit_button);
+        Button cancel = (Button) findViewById(R.id.cancel);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTitle == null || mTitle.getText().toString().equals("")){
+                    //TODO open dialog box saying Title is neccesary
+                } else {
+                    Intent data = new Intent();
+                    ReminderItem.packageIntent(data, mTitle.getText().toString(),
+                            mDescription.getText().toString(), mNotification, mFeed);
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
+            }
+        });
+        cancel.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent data = new Intent();
+                setResult(RESULT_CANCELED, data);
+                finish();
+            }
+        }));
     }
 }

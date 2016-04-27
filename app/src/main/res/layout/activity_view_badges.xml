@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.team16umd.routineapp.ViewBadgesActivity"
+    android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/top_bar"
+        android:background="@color/app_main">
+
+        <!--The first TextView represents the current score -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50"
+            android:textColor="@color/topBarText"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"/>
+        <!-- Basic Title (Text is a placeholder) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/topBarText"
+            android:textSize="30dp"
+            android:text="Your Badges"/>
+        <!-- Contains the user's fb profile picture
+        (I want to add on onClickListener here that opens an options menu)
+        -->
+        <com.facebook.login.widget.ProfilePictureView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/profile_pic"
+            ></com.facebook.login.widget.ProfilePictureView>
+    </RelativeLayout>
+
+    <HorizontalScrollView
+        android:layout_weight="1"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar"
+        android:background="@color/white">
+        
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/trophies_container"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="300dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:background="@drawable/one_day_streak"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:background="@drawable/five_day_streak"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:background="@drawable/ten_day_streak"/>
+
+        </LinearLayout>
+        
+    </HorizontalScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trophy Name"
+        android:textColor="@color/black"
+        android:id="@+id/trophy_name"
+        android:paddingTop="20dp"
+        android:fontFamily="sans-serif"
+        android:textSize="40dp"/>
+
+    <TextView
+        android:id="@+id/trophy_date"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif"
+        android:layout_below="@+id/trophy_name"
+        android:text="Obtained on Date"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:id="@+id/trophy_desc"
+        android:layout_below="@+id/trophy_date"
+        android:textSize="25dp"
+        android:text="@string/description_placeholder"/>
+    </RelativeLayout>
+
+</LinearLayout>

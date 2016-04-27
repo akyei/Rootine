@@ -35,6 +35,18 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.util.Date;
+
 
  /*
     TODO Implement the list activity. The list activity should show all Reminder items for the
@@ -75,6 +87,7 @@ public class ReminderListActivity extends ListActivity {
     private Button mBadgeButton, mSocialButton, mHistoryButton;
     private String mUid;
     private TextView mPoints;
+
     private static final String FILE_NAME = "ReminderAppData.txt";
     // List Adapter for this class
     private ReminderItemAdapter mAdapter;
@@ -168,6 +181,8 @@ public class ReminderListActivity extends ListActivity {
         }
         mAdapter = new ReminderItemAdapter(getApplicationContext());
         getListView().setAdapter(mAdapter);
+<<<<<<< HEAD
+=======
 
     }
     @Override
@@ -175,11 +190,42 @@ public class ReminderListActivity extends ListActivity {
         if(requestCode == ADD_REMINDER_REQUEST && resultCode == RESULT_OK){
             ReminderItem nRi = new ReminderItem(data);
 
+            //TODO- change behavior when FireBase connection exists
+            mAdapter.add(nRi, false);
+        }
+    }
+>>>>>>> 053cff3a701f0acec847b4e0c65872bb2d060177
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveItems();
+    }
+
+    @Override
+<<<<<<< HEAD
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == ADD_REMINDER_REQUEST && resultCode == RESULT_OK){
+            ReminderItem nRi = new ReminderItem(data);
+
             //DONE:- change behavior when FireBase connection exists
             mAdapter.add(nRi, true);
         }
+=======
+    protected void onResume() {
+        super.onResume();
+        loadItems();
     }
 
+    private void loadItems() {
+        //TODO- load items from FireBase (or locally as a fallback?)
+>>>>>>> 053cff3a701f0acec847b4e0c65872bb2d060177
+    }
+
+    // Save ToDoItems to file
+    private void saveItems() {
+        //TODO- store items in Firebase (or locally as a fallback)
+    }
     @Override
     protected void onPause() {
         super.onPause();

@@ -96,6 +96,7 @@ public class ReminderItemAdapter extends BaseAdapter {
             Firebase newRef = mRemindersRef.push();
             newRef.setValue(jsonObj);
             item.addReferenceId(newRef.getKey());
+            //TODO - add some kind of firebase functionality?
             mReminderItems.add(item);
             notifyDataSetChanged();
         } else {
@@ -184,6 +185,7 @@ public class ReminderItemAdapter extends BaseAdapter {
         });
         return row;
 
+<<<<<<< HEAD
     }
 
     public static void completeItem(ReminderItem item){
@@ -229,6 +231,18 @@ public class ReminderItemAdapter extends BaseAdapter {
             }
         });
     }
+=======
+        RelativeLayout reminderLayout = (RelativeLayout) mInflater.inflate(R.layout.reminder_item, parent);
+        reminderLayout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                //TODO- either do a color change on the View or check a box in the layout
+            }
+        });
+
+        //TODO- populate additional fields of the reminder layout (as fields are added to the ReminderItem class)
+>>>>>>> 053cff3a701f0acec847b4e0c65872bb2d060177
 
     private static class ViewHolder {
         TextView title;

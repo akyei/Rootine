@@ -15,7 +15,12 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.ProfilePictureView;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,6 +32,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -64,11 +70,11 @@ import java.util.Date;
 
 public class ReminderListActivity extends ListActivity {
     private AuthData mAuthData;
-    private ProfilePictureView mProfilePic;
     private Firebase mFirebase;
     private Firebase mUserRef;
     private Button mBadgeButton, mSocialButton, mHistoryButton;
     private String mUid;
+    private TextView mPoints;
     private static final String FILE_NAME = "ReminderAppData.txt";
     // List Adapter for this class
     private ReminderItemAdapter mAdapter;
@@ -81,12 +87,21 @@ public class ReminderListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
-        setContentView(R.layout.activity_reminder_list);
-        getListView().setFooterDividersEnabled(true);
-        TextView footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view, null);
-        getListView().addFooterView(footerView);
+        TextView footerView;
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 12){
+            setContentView(R.layout.activity_reminder_list_night);
+            getListView().setFooterDividersEnabled(true);
+            footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view_night, null);
+            getListView().addFooterView(footerView);
+        } else {
+            setContentView(R.layout.activity_reminder_list);
+            getListView().setFooterDividersEnabled(true);
+            footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view, null);
+            getListView().addFooterView(footerView);
+        }
 
 
+        mPoints = (TextView) findViewById(R.id.points);
         mBadgeButton = (Button) findViewById(R.id.badge_button);
         mSocialButton = (Button) findViewById(R.id.social_button);
         mHistoryButton = (Button) findViewById(R.id.graph_button);
@@ -99,6 +114,16 @@ public class ReminderListActivity extends ListActivity {
             }
         });
 
+        mSocialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReminderListActivity.this, SocialFeedActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
         footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +132,6 @@ public class ReminderListActivity extends ListActivity {
             }
         });
 
-        mProfilePic = (ProfilePictureView) findViewById(R.id.profile_pic);
         /*
             Creates reference to firebase (mFirebase) then gets an authentication
             token (mAuthData)
@@ -121,15 +145,26 @@ public class ReminderListActivity extends ListActivity {
             /*
                 If the login is valid, set the profile Id for the imageView.
              */
-            mProfilePic.setProfileId((String) mAuthData.getProviderData().get("id"));
             /*
                 If the login is valid, create the firebase reference to the specific user.
              */
             mUid = (String) mAuthData.getUid();
             mUserRef = new Firebase(getResources().getString(R.string.firebase_url) + mUid);
+            mUserRef.child("points").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mPoints.setText(dataSnapshot.getValue().toString());
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
             // Retrieve available items from firebase and add them to list adapter.
         } else {
             //TODO Handle the case when token is invalid (i.e return to LoginActivity)
+            finish();
         }
         mAdapter = new ReminderItemAdapter(getApplicationContext());
         getListView().setAdapter(mAdapter);
@@ -140,8 +175,8 @@ public class ReminderListActivity extends ListActivity {
         if(requestCode == ADD_REMINDER_REQUEST && resultCode == RESULT_OK){
             ReminderItem nRi = new ReminderItem(data);
 
-            //TODO- change behavior when FireBase connection exists
-            mAdapter.add(nRi, false);
+            //DONE:- change behavior when FireBase connection exists
+            mAdapter.add(nRi, true);
         }
     }
 
@@ -156,14 +191,23 @@ public class ReminderListActivity extends ListActivity {
         super.onResume();
         loadItems();
     }
-
+    /*
+        functionality handled in ListAdapter
+     */
     private void loadItems() {
-        //TODO- load items from FireBase (or locally as a fallback?)
+        //DONE- load items from FireBase (or locally as a fallback?)
     }
 
     // Save ToDoItems to file
+
+
     private void saveItems() {
-        //TODO- store items in Firebase (or locally as a fallback)
+        //DONE:- store items in Firebase (or locally as a fallback)
+        /*
+            Firebase functionality handled in ListAdapter
+         */
+
+        //TODO: Store locally when no internet connection, sync later
     }
     @Override
     public void onDestroy() {

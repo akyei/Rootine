@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/white"
+    android:background="@color/dark_gray"
     tools:context="com.team16umd.routineapp.ReminderListActivity">
 
     <include layout="@layout/topbar_layout" />
@@ -19,27 +19,30 @@
         android:id="@+id/bottom_bar"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:background="#FFFFFF">
+        android:background="@color/black">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/badge_button"
             android:text="See Badges"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textColor="@color/app_main"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/social_button"
             android:layout_toRightOf="@+id/badge_button"
             android:text="Social Feed"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textColor="@color/app_main"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/graph_button"
             android:layout_toRightOf="@+id/social_button"
             android:text="Your History"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textColor="@color/app_main"/>
 
 
     </RelativeLayout>

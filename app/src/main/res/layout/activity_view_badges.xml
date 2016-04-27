@@ -8,43 +8,7 @@
     android:background="@color/white"
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:id="@+id/top_bar"
-        android:background="@color/app_main">
-
-        <!--The first TextView represents the current score -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="50"
-            android:textColor="@color/topBarText"
-            android:layout_centerVertical="true"
-            android:paddingLeft="10dp"/>
-        <!-- Basic Title (Text is a placeholder) -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/topBarText"
-            android:textSize="30dp"
-            android:text="Your Badges"/>
-        <!-- Contains the user's fb profile picture
-        (I want to add on onClickListener here that opens an options menu)
-        -->
-        <com.facebook.login.widget.ProfilePictureView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:layout_centerVertical="true"
-            android:id="@+id/profile_pic"
-            ></com.facebook.login.widget.ProfilePictureView>
-    </RelativeLayout>
+    <include layout="@layout/topbar_layout" />
 
     <HorizontalScrollView
         android:layout_weight="1"

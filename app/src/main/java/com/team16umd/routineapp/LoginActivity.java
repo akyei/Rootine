@@ -38,6 +38,7 @@ public class LoginActivity extends Activity {
     private AccessTokenTracker facebookAccessTokenTracker;
     private ProgressDialog mAuthProgressDialog;
     private Firebase mFirebaseRef;
+    private Firebase mUserRef;
     private AuthData mAuthData;
     private Firebase.AuthStateListener mAuthStateListener;
 
@@ -82,17 +83,7 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
             }
         });
-      /*  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }); */
     }
 
     @Override
@@ -148,12 +139,14 @@ public class LoginActivity extends Activity {
             mStartButton.setVisibility(View.VISIBLE);
             String name = null;
             if (authData.getProvider().equals("facebook")){
-                Map<String, Object> user = new HashMap<String, Object>();
+                //Map<String, Object> user = new HashMap<String, Object>();
                 Map<String, Object> userInfo = new HashMap<String, Object>();
+                mUserRef = new Firebase(getResources().getString(R.string.firebase_url)+ authData.getUid() +"/" +"login_info");
                 userInfo.put("login_time", ServerValue.TIMESTAMP);
                 userInfo.put("profile_url", authData.getProviderData().get("profileImageURL"));
-                user.put(authData.getUid(), userInfo);
-                mFirebaseRef.updateChildren(user);
+                //user.put(authData.getUid(), userInfo);
+                mUserRef.updateChildren(userInfo);
+                //mFirebaseRef.updateChildren(user);
                 name = (String) authData.getProviderData().get("displayName");
 
             } else {

@@ -7,16 +7,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 public class AddReminderActivity extends Activity {
     private Firebase mFirebase;
     private Firebase mUserRef;
     private AuthData mAuthData;
     private String mUid;
+    private TextView mPoints;
+    private RadioGroup mNotificationGroup;
+    private RadioGroup mFeedGroup;
     private boolean mNotification;
     private boolean mFeed;
     private EditText mTitle;
@@ -56,6 +64,8 @@ public class AddReminderActivity extends Activity {
         This activity should create a data intent that is returned when the activity finishes.
         The Intent should bundle specific information that can be used to create a new reminder Item.
      */
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +74,26 @@ public class AddReminderActivity extends Activity {
         setContentView(R.layout.activity_add_reminder);
         mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
         mAuthData = mFirebase.getAuth();
-
+        mNotificationGroup = (RadioGroup) findViewById(R.id.notication_group);
+        mFeedGroup = (RadioGroup) findViewById(R.id.feed_group);
+        mTitle = (EditText) findViewById(R.id.title_box);
+        mPoints = (TextView) findViewById(R.id.points);
+        mDescription = (EditText) findViewById(R.id.description_box);
         if (mAuthData != null){
             Log.d(LoginActivity.TAG, "AuthData: " + mAuthData.toString());
             mUid = mAuthData.getUid();
             mUserRef = new Firebase(getResources().getString(R.string.firebase_url) + mUid);
+            mUserRef.child("points").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mPoints.setText(dataSnapshot.getValue().toString());
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
         }
 
         Button submit = (Button) findViewById(R.id.submit_button);
@@ -80,6 +105,8 @@ public class AddReminderActivity extends Activity {
                     //TODO open dialog box saying Title is neccesary
                 } else {
                     Intent data = new Intent();
+                    mNotification = getNotificationSetting();
+                    mFeed = getFeedSetting();
                     ReminderItem.packageIntent(data, mTitle.getText().toString(),
                             mDescription.getText().toString(), mNotification, mFeed);
                     setResult(RESULT_OK, data);
@@ -96,4 +123,35 @@ public class AddReminderActivity extends Activity {
             }
         }));
     }
+
+    /*
+        Returns Radio Button values for Notifications
+     */
+
+    private boolean getNotificationSetting(){
+        switch(mNotificationGroup.getCheckedRadioButtonId()){
+            case R.id.notification_yes: {
+                return true;
+            }case R.id.notification_no: {
+                return false;
+            }default: {
+                return true;
+            }
+        }
+    }
+    /*
+        Returns values from Radio Buttons
+     */
+    private boolean getFeedSetting(){
+        switch(mFeedGroup.getCheckedRadioButtonId()){
+            case R.id.feed_yes: {
+                return true;
+            }case R.id.feed_no: {
+                return false;
+            }default: {
+                return true;
+            }
+        }
+    }
+
 }

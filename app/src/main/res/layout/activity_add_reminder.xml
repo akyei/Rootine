@@ -7,49 +7,15 @@
     android:background="@color/white"
     tools:context="com.team16umd.routineapp.AddReminderActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/top_bar"
-        android:background="@color/app_main">
-
-        <!--The first TextView represents the current score -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="50"
-            android:textColor="@color/topBarText"
-            android:layout_centerVertical="true"
-            android:paddingLeft="10dp"
-            />
-        <!-- Basic Title (Text is a placeholder) -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/topBarText"
-            android:textSize="30dp"
-            android:text="Add a new Routine"/>
-        <!-- Contains the user's fb profile picture
-        (I want to add on onClickListener here that opens an options menu)
-        -->
-        <com.facebook.login.widget.ProfilePictureView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:paddingRight="10dp"
-            android:layout_centerVertical="true"
-            android:id="@+id/profile_pic"
-            ></com.facebook.login.widget.ProfilePictureView>
-    </RelativeLayout>
+    <include layout="@layout/topbar_layout" />
 
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-
+        android:id="@+id/title_box"
+        android:textColor="@color/black"
         android:hint="Enter a title for your routine"/>
 
     <View style="@style/Divider"></View>
@@ -59,6 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:textAlignment="viewStart"
+        android:id="@+id/description_box"
+        android:textColor="@color/black"
         android:hint="Enter a brief description about your routine (Optional)"/>
     <View style="@style/Divider"></View>
 
@@ -74,17 +42,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/notication_group"
         >
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yes"
+            android:id="@+id/notification_yes"
             android:textColor="@color/black"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No"
+            android:id="@+id/notification_no"
             android:textColor="@color/black"/>
     </RadioGroup>
     <TextView
@@ -97,17 +68,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/feed_group"
         >
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yes"
+            android:id="@+id/feed_yes"
             android:textColor="@color/black"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No"
+            android:id="@+id/feed_no"
             android:textColor="@color/black"/>
     </RadioGroup>
     <Space

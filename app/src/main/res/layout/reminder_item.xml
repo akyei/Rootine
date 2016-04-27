@@ -3,7 +3,8 @@
     android:id="@+id/reminder_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+
+    >
 
 
     <TextView
@@ -18,6 +19,7 @@
         />
     <TextView
         android:layout_width="match_parent"
+        android:id="@+id/reminder_item_desc"
         android:layout_height="wrap_content"
         android:text="Small synopsis of reminder"
         android:layout_below="@+id/reminder_item_text"
@@ -28,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/completion_status_icon"
-        android:background="@drawable/checkmark"
+        android:src="@drawable/checkmark"
         android:layout_alignParentEnd="true"/>
     <!-- TODO: add views for additional reminder fields -->
 

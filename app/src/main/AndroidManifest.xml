@@ -39,13 +39,14 @@
         <activity
             android:name=".ReminderListActivity"
             android:label="@string/title_activity_reminder_list" />
-        <activity android:name=".AddReminderActivity"
-            />
+        <activity android:name=".AddReminderActivity" />
         <activity
             android:name=".ViewBadgesActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
-        <activity android:name=".SocialFeedActivity"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"></activity>
+        <activity
+            android:name=".SocialFeedActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+        <activity android:name=".GraphActivity"></activity>
     </application>
 
 </manifest>

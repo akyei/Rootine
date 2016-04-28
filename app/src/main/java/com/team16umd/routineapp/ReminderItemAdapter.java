@@ -185,14 +185,14 @@ public class ReminderItemAdapter extends BaseAdapter {
         });
         return row;
 
-<<<<<<< HEAD
     }
 
     public static void completeItem(ReminderItem item){
         Map<String, Object> jsonObj = new HashMap<String, Object>();
-        SimpleDateFormat d1 = new SimpleDateFormat("mm-dd-yyyy hh:mm");
-        jsonObj.put("time_completed", d1.format(new Date()));
-        mCompletedRef.child(item.getmTitle()).push().updateChildren(jsonObj);
+        SimpleDateFormat d1 = new SimpleDateFormat("MM-dd-yyyy hh:mm");
+        //jsonObj.put("time_completed", d1.format(new Date()));
+
+        //mCompletedRef.child(item.getmTitle()).push().updateChildren(jsonObj);
         addPoint();
     }
     public static void addPoint(){
@@ -231,18 +231,7 @@ public class ReminderItemAdapter extends BaseAdapter {
             }
         });
     }
-=======
-        RelativeLayout reminderLayout = (RelativeLayout) mInflater.inflate(R.layout.reminder_item, parent);
-        reminderLayout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
 
-                //TODO- either do a color change on the View or check a box in the layout
-            }
-        });
-
-        //TODO- populate additional fields of the reminder layout (as fields are added to the ReminderItem class)
->>>>>>> 053cff3a701f0acec847b4e0c65872bb2d060177
 
     private static class ViewHolder {
         TextView title;

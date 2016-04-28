@@ -101,7 +101,7 @@ public class ReminderListActivity extends ListActivity {
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
         TextView footerView;
-        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 12){
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 12) {
             setContentView(R.layout.activity_reminder_list_night);
             getListView().setFooterDividersEnabled(true);
             footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view_night, null);
@@ -136,7 +136,6 @@ public class ReminderListActivity extends ListActivity {
         });
 
 
-
         footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +151,7 @@ public class ReminderListActivity extends ListActivity {
         mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
         mAuthData = mFirebase.getAuth();
 
-        if (mAuthData != null){
+        if (mAuthData != null) {
 
             Log.d(LoginActivity.TAG, "Login Token Valid - AuthData: " + mAuthData.toString());
             /*
@@ -181,21 +180,7 @@ public class ReminderListActivity extends ListActivity {
         }
         mAdapter = new ReminderItemAdapter(getApplicationContext());
         getListView().setAdapter(mAdapter);
-<<<<<<< HEAD
-=======
-
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == ADD_REMINDER_REQUEST && resultCode == RESULT_OK){
-            ReminderItem nRi = new ReminderItem(data);
-
-            //TODO- change behavior when FireBase connection exists
-            mAdapter.add(nRi, false);
-        }
-    }
->>>>>>> 053cff3a701f0acec847b4e0c65872bb2d060177
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -203,7 +188,6 @@ public class ReminderListActivity extends ListActivity {
     }
 
     @Override
-<<<<<<< HEAD
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == ADD_REMINDER_REQUEST && resultCode == RESULT_OK){
             ReminderItem nRi = new ReminderItem(data);
@@ -211,26 +195,8 @@ public class ReminderListActivity extends ListActivity {
             //DONE:- change behavior when FireBase connection exists
             mAdapter.add(nRi, true);
         }
-=======
-    protected void onResume() {
-        super.onResume();
-        loadItems();
     }
 
-    private void loadItems() {
-        //TODO- load items from FireBase (or locally as a fallback?)
->>>>>>> 053cff3a701f0acec847b4e0c65872bb2d060177
-    }
-
-    // Save ToDoItems to file
-    private void saveItems() {
-        //TODO- store items in Firebase (or locally as a fallback)
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveItems();
-    }
 
     @Override
     protected void onResume() {

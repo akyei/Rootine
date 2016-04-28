@@ -6,6 +6,6 @@
     android:gravity="center_horizontal"
     android:text="@string/add_habit_footer"
     android:textColor="@color/app_main"
-    android:textSize="16sp" >
+    android:textSize="24sp" >
 
 </TextView>

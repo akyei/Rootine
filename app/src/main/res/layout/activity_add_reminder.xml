@@ -27,7 +27,7 @@
         android:textAlignment="viewStart"
         android:id="@+id/description_box"
         android:textColor="@color/black"
-        android:hint="Enter a brief description about your routine (Optional)"/>
+        android:hint="Enter a brief description of your routine (Optional)"/>
     <View style="@style/Divider"></View>
 
     <TextView

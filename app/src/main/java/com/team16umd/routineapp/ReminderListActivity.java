@@ -165,6 +165,7 @@ public class ReminderListActivity extends ListActivity {
             mUserRef.child("points").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    //TODO- I get a NullPointerException for toString() here after connecting to FB
                     mPoints.setText(dataSnapshot.getValue().toString());
                 }
 

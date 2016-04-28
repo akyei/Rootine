@@ -165,7 +165,11 @@ public class ReminderListActivity extends ListActivity {
             mUserRef.child("points").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    mPoints.setText(dataSnapshot.getValue().toString());
+                    if (dataSnapshot.getValue() == null ){
+                        mPoints.setText("0");
+                    } else {
+                        mPoints.setText(dataSnapshot.getValue().toString());
+                    }
                 }
 
                 @Override

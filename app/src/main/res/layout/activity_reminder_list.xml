@@ -24,21 +24,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/badge_button"
-            android:text="See Badges"
+            android:text="@string/badge_button_text"
             android:textAllCaps="false"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/social_button"
             android:layout_toRightOf="@+id/badge_button"
-            android:text="Social Feed"
+            android:text="@string/social_button_text"
             android:textAllCaps="false"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/graph_button"
             android:layout_toRightOf="@+id/social_button"
-            android:text="Your History"
+            android:text="@string/graph_button_text"
             android:textAllCaps="false"/>
 
 

@@ -21,6 +21,7 @@ public class ReminderItem {
     public final static String FEED = "mFeed";
     public final static String DAY = "mDayStatus";
     public final static String NIGHT = "mNightStatus";
+    public final static String TAG = "REMINDER_ITEM";
 
     //DONE: Add private/public/protected fields as needed for the ReminderItem
     private String mDesc;
@@ -32,13 +33,16 @@ public class ReminderItem {
 
     private String mKey = "";
 
+    //Set the key for the reminder Item
     public void setReferenceId(String id){
         mKey = id;
     }
+    //Getter for mKey
     public String getReferenceId(){
         return mKey;
     }
 
+    /* Anything with @JsonProperty is used when retrieving a complex item from firebase */
     @JsonProperty("mTitle")
     public String getmTitle(){
         return mTitle;
@@ -87,12 +91,13 @@ public class ReminderItem {
     public void setmNotification(boolean status){
         mNotification = status;
     }
-
+    //EMPTY CONSTRUCTOR REQUIRED FOR FIREBASE
     public ReminderItem(){
-
+        //Don't delete me
     }
+
     /*
-        Used when adding a Reminder Item to firebase
+        Used when adding a Reminder Item to firebase: clone of setReferenceId
      */
     public void addReferenceId(String key){
         mKey = key;
@@ -141,8 +146,6 @@ public class ReminderItem {
         reminderDetails.put(FEED, mFeed);
         reminderDetails.put(DAY,mDayStatus);
         reminderDetails.put(NIGHT, mNightStatus);
-        //jsonObj.put(mTitle, reminderDetails);
-
 
         return reminderDetails;
     }

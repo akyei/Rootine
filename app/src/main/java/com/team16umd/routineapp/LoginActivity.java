@@ -142,7 +142,6 @@ public class LoginActivity extends Activity {
             mStartButton.setVisibility(View.VISIBLE);
             String name = null;
             if (authData.getProvider().equals("facebook")){
-                //Map<String, Object> user = new HashMap<String, Object>();
                 Map<String, Object> userInfo = new HashMap<String, Object>();
                 mUserRef = new Firebase(getResources().getString(R.string.firebase_url)+ authData.getUid() +"/");
                 Firebase loginRef = mUserRef.child("login_info");
@@ -165,9 +164,7 @@ public class LoginActivity extends Activity {
 
                     }
                 });
-                //user.put(authData.getUid(), userInfo);
                 loginRef.updateChildren(userInfo);
-                //mFirebaseRef.updateChildren(user);
                 name = (String) authData.getProviderData().get("displayName");
 
             } else {
@@ -180,7 +177,6 @@ public class LoginActivity extends Activity {
                 mloginButton.setVisibility(View.VISIBLE);
             }
             this.mAuthData = authData;
-            //supportInvalidateOptionsMenu();
         }
     }
 

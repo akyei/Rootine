@@ -49,7 +49,7 @@ import java.util.Date;
 
 
  /*
-    TODO Implement the list activity. The list activity should show all Reminder items for the
+    DONE: Implement the list activity. The list activity should show all Reminder items for the
     current user. You will need to define the XML for each ReminderItem in the list. We also talked
     about having a different UI depending on the time of day. I wouldn't worry about that for the
     initial demo though.
@@ -126,7 +126,7 @@ public class ReminderListActivity extends ListActivity {
                 startActivity(intent);
             }
         });
-
+        //TODO: Implement a social feature here (TBD)
        /* mSocialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +186,7 @@ public class ReminderListActivity extends ListActivity {
             });
             // Retrieve available items from firebase and add them to list adapter.
         } else {
-            //TODO Handle the case when token is invalid (i.e return to LoginActivity)
+            //DONE: Handle the case when token is invalid (i.e return to LoginActivity)
             finish();
         }
         mAdapter = new ReminderItemAdapter(getApplicationContext());

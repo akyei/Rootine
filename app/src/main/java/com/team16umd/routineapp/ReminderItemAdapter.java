@@ -41,6 +41,7 @@ import java.util.Map;
 
 public class ReminderItemAdapter extends BaseAdapter {
 
+    public static final String TAG = "REMINDER_ITEM_ADAPTER";
     private final Context mContext;
     private Firebase mFirebase;
     private static Firebase mUserRef = null;
@@ -63,12 +64,14 @@ public class ReminderItemAdapter extends BaseAdapter {
         mAuthData = mFirebase.getAuth();
         circle_bp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.empty_circle);
         check_bp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.checkmark);
+
         if(mAuthData != null){
             mUid = mAuthData.getUid();
             mUserRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid);
             mCompletedRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "completed/");
             mRemindersRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "reminders/");
 
+            //Load Reminders into adapter from firebase
             mRemindersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -90,7 +93,7 @@ public class ReminderItemAdapter extends BaseAdapter {
             });
         }
     }
-
+    //Add reminder to adapter, toFirebase boolean should generally be set to true
     public void add(ReminderItem item, Boolean toFirebase){
 
         /* If toFirebase is set to true, then add the item to Firebase as well */
@@ -100,7 +103,7 @@ public class ReminderItemAdapter extends BaseAdapter {
             Firebase newRef = mRemindersRef.push();
             newRef.setValue(jsonObj);
             item.addReferenceId(newRef.getKey());
-            //TODO - add some kind of firebase functionality?
+            //DONE: - add some kind of firebase functionality?
             mReminderItems.add(item);
             notifyDataSetChanged();
         } else {
@@ -129,9 +132,10 @@ public class ReminderItemAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent){
+        /* Using ViewHolder Pattern for increased performance */
+
         ViewHolder holder;
         View row = convertView;
-        Calendar c1 = Calendar.getInstance();
 
         if (row == null){
             row = LayoutInflater.from(mContext).inflate(R.layout.reminder_item, parent, false);
@@ -144,21 +148,27 @@ public class ReminderItemAdapter extends BaseAdapter {
             holder = (ViewHolder) row.getTag();
         }
 
+        //Retrieve the current reminderItem
         final ReminderItem reminderItem = (ReminderItem) getItem(position);
+        //Set title and description fields
         holder.description.setText(reminderItem.getmDesc());
         holder.title.setText(reminderItem.getmTitle());
-        if (c1.get(Calendar.HOUR_OF_DAY) < 12) {
+        if (beforeNoon()) {
             if (reminderItem.getmDayStatus()) {
+                //Set in UI whether item is completed or not
                 holder.completionStatus.setImageBitmap(check_bp);
                 holder.completionStatus.setClickable(false);
             } else {
+                //Set in UI whether item is completed or not
                 holder.completionStatus.setImageBitmap(circle_bp);
             }
         } else {
             if (reminderItem.getmNightStatus()) {
+                //Set in UI whether item is completed or no
                 holder.completionStatus.setImageBitmap(check_bp);
                 holder.completionStatus.setClickable(false);
             } else {
+                //Set in UI whether item is completed or no
                 holder.completionStatus.setImageBitmap(circle_bp);
             }
         }
@@ -166,14 +176,20 @@ public class ReminderItemAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View v) {
                 //DONE: open dialog box with option to delete or edit completion status
-                //TODO: Implement underlying behavior for dialog box
+                //DONE: Implement underlying behavior for dialog box
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
                 builder.setMessage("Title: " + reminderItem.getmTitle())
                         .setTitle("Edit Routine")
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                Log.i(TAG, "Deleting Reminder: "+reminderItem.getmTitle());
+                                //Delete reminder from firebase
+                                mUserRef.child("reminders").child(reminderItem.getReferenceId()).removeValue();
+                                //remove item from adapter
                                 mReminderItems.remove(reminderItem);
+                                //redraw ListView
                                 notifyDataSetChanged();
+                                Log.i(TAG, "Deleted Reminder: "+reminderItem.getmTitle());
                             }
                         })
                         .setNegativeButton(R.string.uncheck, new DialogInterface.OnClickListener() {
@@ -182,17 +198,24 @@ public class ReminderItemAdapter extends BaseAdapter {
 
                                 if (beforeNoon()){
                                     if (reminderItem.getmDayStatus()) {
+                                        Log.i(TAG, "Unchecking Reminder(Day): "+reminderItem.getmTitle());
+                                        //Change item from completed to incomplete in firebase and in Adapter
                                         mUserRef.child("reminders").child(reminderItem.getReferenceId()).child("mDayStatus").setValue(false);
                                         reminderItem.setmDayStatus(false);
+                                        //redraw list view
                                         notifyDataSetChanged();
                                         removePoint();
+                                        Log.i(TAG, "Unchecked Reminder(Day): "+reminderItem.getmTitle());
                                     }
                                 } else {
                                     if (reminderItem.getmNightStatus()) {
+                                        Log.i(TAG, "Unchecked Reminder(Day): "+reminderItem.getmTitle());
                                         mUserRef.child("reminders").child(reminderItem.getReferenceId()).child("mNightStatus").setValue(false);
                                         reminderItem.setmNightStatus(false);
+                                        //Redraw list view
                                         notifyDataSetChanged();
                                         removePoint();
+                                        Log.i(TAG, "Unchecked Reminder(Night): "+reminderItem.getmTitle());
                                     }
                                 }
                             }
@@ -201,6 +224,7 @@ public class ReminderItemAdapter extends BaseAdapter {
                         .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                Log.i(TAG, "Dialog Cancelled");
                                 dialog.cancel();
                             }
                         });
@@ -212,11 +236,20 @@ public class ReminderItemAdapter extends BaseAdapter {
         holder.completionStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (! reminderItem.getmDayStatus()){
-                    ImageView imageView = (ImageView) v;
-                    imageView.setImageBitmap(check_bp);
-                    ReminderItemAdapter.completeItem(reminderItem);
-                    v.setClickable(false);
+                if (beforeNoon()) {
+                    if (!reminderItem.getmDayStatus()) {
+                        ImageView imageView = (ImageView) v;
+                        imageView.setImageBitmap(check_bp);
+                        ReminderItemAdapter.completeItem(reminderItem);
+                        v.setClickable(false);
+                    }
+                } else {
+                    if (!reminderItem.getmNightStatus()) {
+                        ImageView imageView = (ImageView) v;
+                        imageView.setImageBitmap(check_bp);
+                        ReminderItemAdapter.completeItem(reminderItem);
+                        v.setClickable(false);
+                    }
                 }
 
             }
@@ -231,8 +264,7 @@ public class ReminderItemAdapter extends BaseAdapter {
     }
 
     public static void completeItem(ReminderItem item){
-        final Map<String, Object> jsonObj = new HashMap<>();
-        final SimpleDateFormat d1 = new SimpleDateFormat("MM-dd-yyyy hh:mm");
+
         Firebase itemRef = mUserRef.child("reminders").child(item.getReferenceId());
         Firebase basicStats = mCompletedRef.child(item.getmTitle()).child("basic_stats");
         final Firebase history = mCompletedRef.child(item.getmTitle()).child("history");

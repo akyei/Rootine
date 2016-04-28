@@ -22,9 +22,12 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
 import com.firebase.client.ServerValue;
+import com.firebase.client.Transaction;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -141,11 +144,29 @@ public class LoginActivity extends Activity {
             if (authData.getProvider().equals("facebook")){
                 //Map<String, Object> user = new HashMap<String, Object>();
                 Map<String, Object> userInfo = new HashMap<String, Object>();
-                mUserRef = new Firebase(getResources().getString(R.string.firebase_url)+ authData.getUid() +"/" +"login_info");
+                mUserRef = new Firebase(getResources().getString(R.string.firebase_url)+ authData.getUid() +"/");
+                Firebase loginRef = mUserRef.child("login_info");
                 userInfo.put("login_time", ServerValue.TIMESTAMP);
                 userInfo.put("profile_url", authData.getProviderData().get("profileImageURL"));
+                Firebase pointsRef = mUserRef.child("points");
+                pointsRef.runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData mutableData) {
+                        if (mutableData.getValue() == null){
+                            mutableData.setValue(0);
+                        } else {
+                            //do nothing, points already set
+                        }
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                    }
+                });
                 //user.put(authData.getUid(), userInfo);
-                mUserRef.updateChildren(userInfo);
+                loginRef.updateChildren(userInfo);
                 //mFirebaseRef.updateChildren(user);
                 name = (String) authData.getProviderData().get("displayName");
 

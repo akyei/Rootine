@@ -3,6 +3,7 @@
     android:id="@+id/reminder_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     >
 
 
@@ -11,8 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="20dp"
-        android:layout_toLeftOf="@+id/completion_status_icon"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="20sp"
+        android:layout_toStartOf="@+id/completion_status_icon"
         android:text="Text not initialized"
 
         />
@@ -20,16 +23,18 @@
         android:layout_width="match_parent"
         android:id="@+id/reminder_item_desc"
         android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="Small synopsis of reminder"
         android:layout_below="@+id/reminder_item_text"
-        android:layout_toLeftOf="@+id/completion_status_icon"
+        android:layout_toStartOf="@+id/completion_status_icon"
         android:textColor="@color/black"
         />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/completion_status_icon"
-        android:src="@drawable/checkmark"
+        android:contentDescription="Image"
         android:layout_alignParentEnd="true"/>
     <!-- TODO: add views for additional reminder fields -->
 

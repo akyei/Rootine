@@ -116,7 +116,7 @@ public class ReminderListActivity extends ListActivity {
 
         mPoints = (TextView) findViewById(R.id.points);
         mBadgeButton = (Button) findViewById(R.id.badge_button);
-        mSocialButton = (Button) findViewById(R.id.social_button);
+        //mSocialButton = (Button) findViewById(R.id.social_button);
         mHistoryButton = (Button) findViewById(R.id.graph_button);
 
         mBadgeButton.setOnClickListener(new View.OnClickListener() {
@@ -127,14 +127,21 @@ public class ReminderListActivity extends ListActivity {
             }
         });
 
-        mSocialButton.setOnClickListener(new View.OnClickListener() {
+       /* mSocialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReminderListActivity.this, SocialFeedActivity.class);
                 startActivity(intent);
             }
-        });
+        }); */
 
+        mHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReminderListActivity.this, GraphActivity.class);
+                startActivity(intent);
+            }
+        });
 
         footerView.setOnClickListener(new View.OnClickListener() {
             @Override

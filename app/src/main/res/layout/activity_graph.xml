@@ -15,12 +15,40 @@
         android:layout_gravity="center"
         android:textSize="40sp"
         android:textColor="@color/brown"/>
-    <com.github.mikephil.charting.charts.LineChart
-        android:layout_height="300dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:id="@+id/line_chart">
+        android:layout_height="300dp">
+        
+        
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Best Streak"
+            android:id="@+id/best_streak_text"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/best_streak_number"
+            android:text="500"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Streak"
+            android:id="@+id/current_streak_text"
+            android:layout_toRightOf="@+id/best_streak_text"
+            android:layout_below="@+id/current_streak_number"/>
 
-    </com.github.mikephil.charting.charts.LineChart>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/current_streak_number"
+            android:layout_toRightOf=""
+            android:text="250"/>
+    </RelativeLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

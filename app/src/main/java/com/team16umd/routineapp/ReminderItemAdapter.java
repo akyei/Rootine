@@ -108,7 +108,7 @@ public class ReminderItemAdapter extends BaseAdapter {
             notifyDataSetChanged();
         } else {
             mReminderItems.add(item);
-            //notifyDataSetChanged();
+            notifyDataSetChanged();
         }
     }
 

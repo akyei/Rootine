@@ -147,7 +147,7 @@ public class ReminderItemAdapterGraph extends BaseAdapter {
         final ReminderItem reminderItem = (ReminderItem) getItem(position);
         holder.description.setText(reminderItem.getmDesc());
         holder.title.setText(reminderItem.getmTitle());
-        row.setOnClickListener(new ListView.OnClickListener() {
+        /*row.setOnClickListener(new ListView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //DONE: open dialog box with option to delete or edit completion status
@@ -178,8 +178,8 @@ public class ReminderItemAdapterGraph extends BaseAdapter {
                                 i++;
                             }
 
-                            GraphActivity.setLabels(labels);
-                            GraphActivity.addEntries(entries, ContextCompat.getColor(mContext, R.color.app_main));
+                           // GraphActivity.setLabels(labels);
+                            //GraphActivity.addEntries(entries, ContextCompat.getColor(mContext, R.color.app_main));
 
 
                         }
@@ -192,7 +192,7 @@ public class ReminderItemAdapterGraph extends BaseAdapter {
                 });
 
             }
-        });
+        }); */
 
         return row;
 

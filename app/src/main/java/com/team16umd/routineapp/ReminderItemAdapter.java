@@ -62,13 +62,9 @@ public class ReminderItemAdapter extends BaseAdapter {
     private Bitmap check_bp;
     private Bitmap circle_bp;
     private Boolean uncheckAll = false;
-
     private final List<ReminderItem> mReminderItems = new ArrayList<>();
 
-    private void postPhoto(View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
 
-    }
 
     private void uncheckAll(){
         Firebase ref = mUserRef.child("reminders");
@@ -318,15 +314,21 @@ public class ReminderItemAdapter extends BaseAdapter {
                                 /*Test*/
                                 /*AlertDialog.Builder share = new AlertDialog.Builder(v.getRootView().getContext());
                                 share.setTitle("Share With Your Friends on Facebook!");
-                                */
 
-                                Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.five_day_streak);
-                                SharePhoto photo = new SharePhoto.Builder()
-                                        .setBitmap(image)
-                                        .build();
-                                SharePhotoContent content = new SharePhotoContent.Builder()
-                                        .addPhoto(photo)
-                                        .build();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
+                                builder.setTitle("Share Your Progress!");
+                                builder.setMessage("Upload to Facebook?");
+                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                                    public void onClick(DialogInterface dialog, int which){
+                                        Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.five_day_streak);
+                                        SharePhoto photo = new SharePhoto.Builder()
+                                                .setBitmap(image)
+                                                .build();
+                                        SharePhotoContent content = new SharePhotoContent.Builder()
+                                                .addPhoto(photo)
+                                                .build();
+                                        ShareDialog share = new ShareDialog(this);
+
                                 /*End Test*/
                             }
                         });

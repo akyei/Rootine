@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:id="@+id/current_streak_number"
-            android:layout_toRightOf=""
+            android:layout_toRightOf="@+id/current_streak_text"
             android:text="250"/>
     </RelativeLayout>
     <TextView

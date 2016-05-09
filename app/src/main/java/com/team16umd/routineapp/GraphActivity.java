@@ -27,7 +27,7 @@ public class GraphActivity extends Activity {
     private Firebase mUserRef;
     private TextView mPoints;
     private AuthData mAuth;
-    private static LineChart mLineChart;
+    //private static LineChart mLineChart;
     public static final String TAG = "GRAPH_ACTIVITY";
 
     private static ArrayList<Entry> mEntries = new ArrayList<>();
@@ -51,8 +51,8 @@ public class GraphActivity extends Activity {
         mDataset.setDrawFilled(true);
         setColor(color);
         mData = new LineData(mLabels, mDataset);
-        mLineChart.setData(mData);
-        mLineChart.invalidate();
+        //mLineChart.setData(mData);
+        //mLineChart.invalidate();
         Log.i(LoginActivity.TAG, "Drawing Graph");
     }
 
@@ -68,7 +68,7 @@ public class GraphActivity extends Activity {
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(new ReminderItemAdapterGraph(getApplicationContext()));
         //Graph initilization Code.
-        mLineChart = (LineChart) findViewById(R.id.line_chart);
+        /*mLineChart = (LineChart) findViewById(R.id.line_chart);
         mLineChart.getAxisLeft().setDrawGridLines(false);
         mLineChart.getXAxis().setDrawGridLines(false);
         mLineChart.setGridBackgroundColor(128);
@@ -80,7 +80,7 @@ public class GraphActivity extends Activity {
         mLineChart.setAutoScaleMinMaxEnabled(true);
         mLineChart.getAxisRight().setDrawGridLines(false);
         mLineChart.setDrawBorders(false);
-        mLineChart.getXAxis().setTextSize(15f);
+        mLineChart.getXAxis().setTextSize(15f);*/
 
         //Set points for User in top bar
         mPoints = (TextView) findViewById(R.id.points);

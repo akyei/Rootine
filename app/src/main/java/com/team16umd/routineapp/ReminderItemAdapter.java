@@ -18,22 +18,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.MutableData;
+import com.firebase.client.ServerValue;
 import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Created by thekyei on 4/20/16.
@@ -47,6 +54,7 @@ public class ReminderItemAdapter extends BaseAdapter {
     private static Firebase mUserRef = null;
     private static Firebase mCompletedRef = null;
     private Firebase mRemindersRef = null;
+    private Firebase mLoginInfoRef = null;
     private AuthData mAuthData;
     private String mUid;
     private long mCurrentStreak;
@@ -70,7 +78,37 @@ public class ReminderItemAdapter extends BaseAdapter {
             mUserRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid);
             mCompletedRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "completed/");
             mRemindersRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "reminders/");
+            mLoginInfoRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "login_info");
 
+            //Resets all reminders if it is a new day
+            //NOT FINISHED
+            mLoginInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot child : dataSnapshot.getChildren()){
+                        if(child.getKey().equals("login_time")){
+                            Log.i(LoginActivity.TAG, child.getValue().toString());
+                            String lastLogin = child.getValue().toString();
+                            long unix1 = Long.parseLong(lastLogin);
+                            long unix2 = System.currentTimeMillis();
+                            Date date = new Date(unix1);
+                            Date date2 = new Date(unix2);
+                            SimpleDateFormat stdDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss z"); //Date format
+                            stdDate.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+
+                            String formattedDateLast = stdDate.format(date);
+                            String formattedDateNow = stdDate.format(date2);
+                            Log.i("FirstDate", formattedDateLast);
+                            Log.i("SecondDate", formattedDateNow);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.i("ON_CANCELLED", "Login_time test failure");
+                }
+            });
             //Load Reminders into adapter from firebase
             mRemindersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -182,14 +220,14 @@ public class ReminderItemAdapter extends BaseAdapter {
                         .setTitle("Edit Routine")
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Log.i(TAG, "Deleting Reminder: "+reminderItem.getmTitle());
+                                Log.i(TAG, "Deleting Reminder: " + reminderItem.getmTitle());
                                 //Delete reminder from firebase
                                 mUserRef.child("reminders").child(reminderItem.getReferenceId()).removeValue();
                                 //remove item from adapter
                                 mReminderItems.remove(reminderItem);
                                 //redraw ListView
                                 notifyDataSetChanged();
-                                Log.i(TAG, "Deleted Reminder: "+reminderItem.getmTitle());
+                                Log.i(TAG, "Deleted Reminder: " + reminderItem.getmTitle());
                             }
                         })
                         .setNegativeButton(R.string.uncheck, new DialogInterface.OnClickListener() {
@@ -220,12 +258,23 @@ public class ReminderItemAdapter extends BaseAdapter {
                                 }
                             }
                         })
-                        //Cancel Button
-                        .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        //Share Button
+                        .setNeutralButton("Share", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.i(TAG, "Dialog Cancelled");
-                                dialog.cancel();
+                                //Log.i(TAG, "Dialog Cancelled");
+                                //dialog.cancel();
+                                Log.i(TAG, "Dialog Share");
+                                /*Test*/
+                                Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.five_day_streak);
+                                SharePhoto photo = new SharePhoto.Builder()
+                                        .setBitmap(image)
+                                        .build();
+                                SharePhotoContent content = new SharePhotoContent.Builder()
+                                        .addPhoto(photo)
+                                        .build();
+                                ShareApi.share(content, null);
+                                /*End Test*/
                             }
                         });
                 AlertDialog alert = builder.create();

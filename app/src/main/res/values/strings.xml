@@ -18,4 +18,5 @@
     <string name="badge_button_text">View Badges</string>
     <string name="social_button_text">Social Feed</string>
     <string name="graph_button_text">View Graph</string>
+    <string name="share">Share</string>
 </resources>

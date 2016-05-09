@@ -61,19 +61,27 @@ public class ReminderItemAdapter extends BaseAdapter {
 
     private Bitmap check_bp;
     private Bitmap circle_bp;
+    private Boolean uncheckAll = false;
 
     private final List<ReminderItem> mReminderItems = new ArrayList<>();
 
-    private static void uncheckAll(){
+    private void postPhoto(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
+
+    }
+
+    private void uncheckAll(){
         Firebase ref = mUserRef.child("reminders");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child: dataSnapshot.getChildren()){
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
                     DataSnapshot mDay = child.child("mDayStatus");
                     mDay.getRef().setValue(false);
+                    Log.i("Day is false", "DAY FALSE");
                     DataSnapshot mNight = child.child("mNightStatus");
                     mNight.getRef().setValue(false);
+                    Log.i("Night false", "Night false");
                 }
             }
 
@@ -81,8 +89,16 @@ public class ReminderItemAdapter extends BaseAdapter {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
+
         });
+        for (ReminderItem item: mReminderItems){
+            Log.i("Inside unchecked for", "OK");
+            item.setmDayStatus(false);
+            item.setmNightStatus(false);
+        }
+        notifyDataSetChanged();
     }
+
     public ReminderItemAdapter(Context context){
 
         Firebase.setAndroidContext(context);
@@ -106,7 +122,7 @@ public class ReminderItemAdapter extends BaseAdapter {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot child : dataSnapshot.getChildren()){
                         if(child.getKey().equals("last_completed")){
-                            Log.i(LoginActivity.TAG, child.getValue().toString());
+                            Log.i(LoginActivity.TAG, "Inside on uncheck");
                             String lastCompleted = child.getValue().toString();
                             SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy");
                             Date lastChecked = null;
@@ -118,15 +134,17 @@ public class ReminderItemAdapter extends BaseAdapter {
                             Date curr = new Date();
                             Calendar c1 = Calendar.getInstance();
                             Calendar c2 = Calendar.getInstance();
-
                             c1.setTime(lastChecked);
                             c2.setTime(curr);
+
                             /*If the last time a routine was checked is at least a day before the
                             * current time, then reset all of the reminders to be unchecked
                             */
-                            if(c2.DAY_OF_YEAR > c1.DAY_OF_YEAR && c2.YEAR >= c1.YEAR){
+                            if(c2.get(Calendar.DAY_OF_YEAR) > c1.get(Calendar.DAY_OF_YEAR)
+                                    && c2.get(Calendar.YEAR) >= c1.get(Calendar.YEAR)){
                                 Log.i(LoginActivity.TAG, "Need to reset ");
                                 //uncheckAll();
+                                uncheckAll = true;
                             }
                         }
                     }
@@ -147,6 +165,12 @@ public class ReminderItemAdapter extends BaseAdapter {
                             Log.i(LoginActivity.TAG, postSnapshot.getValue().toString());
                             ReminderItem item = postSnapshot.getValue(ReminderItem.class);
                             item.setReferenceId(postSnapshot.getKey());
+                            if(uncheckAll == true){
+                                uncheckAll();
+                                item.setmNightStatus(false);
+                                item.setmDayStatus(false);
+                                uncheckAll = false;
+                            }
                             ReminderItemAdapter.this.add(item, false);
                         }
                     }

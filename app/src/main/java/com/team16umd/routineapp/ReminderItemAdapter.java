@@ -64,6 +64,25 @@ public class ReminderItemAdapter extends BaseAdapter {
 
     private final List<ReminderItem> mReminderItems = new ArrayList<>();
 
+    private static void uncheckAll(){
+        Firebase ref = mUserRef.child("reminders");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    DataSnapshot mDay = child.child("mDayStatus");
+                    mDay.getRef().setValue(false);
+                    DataSnapshot mNight = child.child("mNightStatus");
+                    mNight.getRef().setValue(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
     public ReminderItemAdapter(Context context){
 
         Firebase.setAndroidContext(context);
@@ -329,7 +348,6 @@ public class ReminderItemAdapter extends BaseAdapter {
         Firebase basicStats = mCompletedRef.child(item.getmTitle()).child("basic_stats");
         final Firebase history = mCompletedRef.child(item.getmTitle()).child("history");
         final SimpleDateFormat d2 = new SimpleDateFormat("MM-dd-yyyy");
-
         loginRef.setValue(d2.format(new Date()));
         itemRef.runTransaction(new Transaction.Handler() {
             @Override

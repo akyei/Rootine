@@ -86,20 +86,29 @@ public class ReminderItemAdapter extends BaseAdapter {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot child : dataSnapshot.getChildren()){
-                        if(child.getKey().equals("login_time")){
+                        if(child.getKey().equals("last_completed")){
                             Log.i(LoginActivity.TAG, child.getValue().toString());
-                            String lastLogin = child.getValue().toString();
-                            long unix1 = Long.parseLong(lastLogin);
-                            long unix2 = System.currentTimeMillis();
-                            Date date = new Date(unix1);
-                            Date date2 = new Date(unix2);
-                            SimpleDateFormat stdDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss z"); //Date format
-                            stdDate.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+                            String lastCompleted = child.getValue().toString();
+                            SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy");
+                            Date lastChecked = null;
+                            try{
+                                lastChecked = date.parse(lastCompleted);
+                            }catch(Exception e){
+                                Log.i(LoginActivity.TAG, "Date parse failed");
+                            }
+                            Date curr = new Date();
+                            Calendar c1 = Calendar.getInstance();
+                            Calendar c2 = Calendar.getInstance();
 
-                            String formattedDateLast = stdDate.format(date);
-                            String formattedDateNow = stdDate.format(date2);
-                            Log.i("FirstDate", formattedDateLast);
-                            Log.i("SecondDate", formattedDateNow);
+                            c1.setTime(lastChecked);
+                            c2.setTime(curr);
+                            /*If the last time a routine was checked is at least a day before the
+                            * current time, then reset all of the reminders to be unchecked
+                            */
+                            if(c2.DAY_OF_YEAR > c1.DAY_OF_YEAR && c2.YEAR >= c1.YEAR){
+                                Log.i(LoginActivity.TAG, "Need to reset ");
+                                //uncheckAll();
+                            }
                         }
                     }
                 }
@@ -262,10 +271,12 @@ public class ReminderItemAdapter extends BaseAdapter {
                         .setNeutralButton("Share", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //Log.i(TAG, "Dialog Cancelled");
-                                //dialog.cancel();
                                 Log.i(TAG, "Dialog Share");
                                 /*Test*/
+                                /*AlertDialog.Builder share = new AlertDialog.Builder(v.getRootView().getContext());
+                                share.setTitle("Share With Your Friends on Facebook!");
+                                */
+
                                 Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.five_day_streak);
                                 SharePhoto photo = new SharePhoto.Builder()
                                         .setBitmap(image)
@@ -273,7 +284,6 @@ public class ReminderItemAdapter extends BaseAdapter {
                                 SharePhotoContent content = new SharePhotoContent.Builder()
                                         .addPhoto(photo)
                                         .build();
-                                ShareApi.share(content, null);
                                 /*End Test*/
                             }
                         });
@@ -315,10 +325,12 @@ public class ReminderItemAdapter extends BaseAdapter {
     public static void completeItem(ReminderItem item){
 
         Firebase itemRef = mUserRef.child("reminders").child(item.getReferenceId());
+        Firebase loginRef = mUserRef.child("login_info").child("last_completed");
         Firebase basicStats = mCompletedRef.child(item.getmTitle()).child("basic_stats");
         final Firebase history = mCompletedRef.child(item.getmTitle()).child("history");
         final SimpleDateFormat d2 = new SimpleDateFormat("MM-dd-yyyy");
 
+        loginRef.setValue(d2.format(new Date()));
         itemRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {

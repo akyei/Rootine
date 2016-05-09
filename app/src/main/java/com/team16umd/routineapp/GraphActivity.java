@@ -1,12 +1,16 @@
 package com.team16umd.routineapp;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -34,6 +38,20 @@ public class GraphActivity extends Activity {
     private static ArrayList<String> mLabels = new ArrayList<>();
     private static LineData mData;
     private static LineDataSet mDataset;
+    private ShareDialog shareDialog;
+
+    public boolean shareItem(Bitmap image, String description) {
+        shareDialog = new ShareDialog(this);
+        if (ShareDialog.canShow(SharePhotoContent.class)) {
+            SharePhoto photo = new SharePhoto.Builder().setBitmap(image)
+                    .build();
+            SharePhotoContent content = new SharePhotoContent.Builder()
+                    .addPhoto(photo).build();
+            shareDialog.show(content);
+            return true;
+        }
+        return false;
+    }
 
     // Method to clear the Graph
     public static void clearEntries(){

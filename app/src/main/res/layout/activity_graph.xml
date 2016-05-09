@@ -17,37 +17,62 @@
         android:textColor="@color/brown"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="300dp"
+        android:id="@+id/activity_information"
+        android:background="@drawable/roospread">
         
-        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Name"
+            android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:id="@+id/textView" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Best Streak"
-            android:id="@+id/best_streak_text"/>
+            android:id="@+id/best_streak_text"
+            android:layout_marginStart="34dp"
+            android:textColor="@color/brown"
+            android:layout_centerInParent="true"
+            android:layout_alignTop="@+id/current_streak_text"
+            android:layout_alignStart="@+id/textView" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:textColor="@color/brown"
             android:id="@+id/best_streak_number"
-            android:text="500"/>
+            android:text="500"
+            android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
+            android:textIsSelectable="true"
+            android:layout_above="@+id/best_streak_text"
+            android:layout_alignStart="@+id/best_streak_text" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Current Streak"
             android:id="@+id/current_streak_text"
-            android:layout_toRightOf="@+id/best_streak_text"
-            android:layout_below="@+id/current_streak_number"/>
+            android:textColor="@color/white"
+            android:layout_marginStart="73dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/best_streak_number" />
+
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:text="300"
+            android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
             android:id="@+id/current_streak_number"
-            android:layout_toRightOf="@+id/current_streak_text"
-            android:text="250"/>
+            android:textColor="@color/white"
+            android:layout_alignTop="@+id/best_streak_number"
+            android:layout_alignStart="@+id/current_streak_text" />
     </RelativeLayout>
     <TextView
         android:layout_width="wrap_content"
@@ -56,6 +81,7 @@
         android:textColor="@color/brown"
         android:textSize="20sp"
         android:layout_gravity="center"/>
+
     <View style="@style/Divider"/>
     <ListView
         android:layout_width="match_parent"

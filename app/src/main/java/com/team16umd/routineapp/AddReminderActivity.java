@@ -87,7 +87,6 @@ public class AddReminderActivity extends Activity {
 
         //Linking variables to UI
         mNotificationGroup = (RadioGroup) findViewById(R.id.notication_group);
-        mFeedGroup = (RadioGroup) findViewById(R.id.feed_group);
         mTitle = (EditText) findViewById(R.id.title_box);
         mPoints = (TextView) findViewById(R.id.points);
         mDescription = (EditText) findViewById(R.id.description_box);
@@ -122,7 +121,7 @@ public class AddReminderActivity extends Activity {
         } else {
             //TODO: Build and show a one button alert dialog that redirects user to login Activity
         }
-
+        Button options = (Button) findViewById(R.id.top_bar);
         Button submit = (Button) findViewById(R.id.submit_button);
         Button cancel = (Button) findViewById(R.id.cancel);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +132,6 @@ public class AddReminderActivity extends Activity {
                 } else {
                     Intent data = new Intent();
                     mNotification = getNotificationSetting();
-                    mFeed = getFeedSetting();
                     ReminderItem.packageIntent(data, mTitle.getText().toString(),
                             mDescription.getText().toString(), mNotification, mFeed);
                     setResult(RESULT_OK, data);
@@ -149,6 +147,12 @@ public class AddReminderActivity extends Activity {
                 finish();
             }
         }));
+        options.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+            }
+        });
     }
 
     /*
@@ -160,20 +164,6 @@ public class AddReminderActivity extends Activity {
             case R.id.notification_yes: {
                 return true;
             }case R.id.notification_no: {
-                return false;
-            }default: {
-                return true;
-            }
-        }
-    }
-    /*
-        Returns values from Radio Buttons
-     */
-    private boolean getFeedSetting(){
-        switch(mFeedGroup.getCheckedRadioButtonId()){
-            case R.id.feed_yes: {
-                return true;
-            }case R.id.feed_no: {
                 return false;
             }default: {
                 return true;

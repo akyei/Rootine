@@ -19,7 +19,6 @@
         android:textSize="20sp"
         android:layout_toStartOf="@+id/completion_status_icon"
         android:text="Text not initialized"
-
         />
     <TextView
         android:layout_width="match_parent"
@@ -36,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/completion_status_icon"
+        android:paddingRight="5dp"
         android:contentDescription="Image"
         android:layout_alignParentEnd="true"/>
     <!-- TODO: add views for additional reminder fields -->

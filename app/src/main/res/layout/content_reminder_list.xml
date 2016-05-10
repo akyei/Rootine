@@ -7,8 +7,9 @@
 
     android:layout_height="wrap_content"
     android:id="@id/android:list"
-    android:divider="@color/light_brown"
-    android:dividerHeight="3px"
+    android:divider="@color/dark_gray"
+    android:padding="10dp"
+    android:dividerHeight="15px"
     tools:context="com.team16umd.routineapp.ReminderListActivity"
     tools:showIn="@layout/activity_reminder_list">
 

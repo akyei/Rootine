@@ -53,6 +53,8 @@ public class GraphActivity extends Activity {
     private ShareDialog shareDialog;
     private TextView mRoutineTitle;
     private RelativeLayout mProgressView;
+    private TextView mCurrentStreak;
+    private TextView mBestStreak;
 
     public SharePhoto shareItem(Bitmap image, String description) {
         SharePhoto sp1 = new SharePhoto.Builder().setBitmap(image).setCaption(description).build();
@@ -111,6 +113,8 @@ public class GraphActivity extends Activity {
         setContentView(R.layout.activity_graph);
         shareDialog = new ShareDialog(this);
         mRoutineTitle = (TextView) findViewById(R.id.text_view);
+        mCurrentStreak = (TextView) findViewById(R.id.current_streak_number);
+        mBestStreak = (TextView) findViewById(R.id.best_streak_number);
         ListView listView = (ListView) findViewById(android.R.id.list);
         mProgressView = (RelativeLayout) findViewById(R.id.activity_information);
         listView.setAdapter(new ReminderItemAdapterGraph(getApplicationContext()));
@@ -172,26 +176,21 @@ public class GraphActivity extends Activity {
                     //DONE: Implement Graphing Behavior
                     ReminderItem reminderItem = (ReminderItem) parent.getAdapter().getItem(position);
                     mRoutineTitle.setText(reminderItem.getmTitle());
-                    Firebase historyRef = mUserRef.child("completed").child(reminderItem.getmTitle()).child("history");
+                    Firebase historyRef = mUserRef.child("completed").child(reminderItem.getmTitle()).child("basic_stats");
 
                     historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() == null){
-                                Log.i(LoginActivity.TAG, "YOU'RE SOL");
-                                //SOL
+                                Log.i(GraphActivity.TAG, "No Data for this Routine");
+                                mBestStreak.setText("No Data");
+                                mCurrentStreak.setText("No Data");
+
+
                             } else {
-                                Log.i(LoginActivity.TAG, "YOU'RE IN LUCK PARTIALLY");
-                                float max = 0;
-                                Long curr_val;
-                                int i = 0;
-                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                                    curr_val = (Long) postSnapshot.getValue();
-                                    if (max < curr_val.floatValue()){
-                                        max = curr_val.floatValue();
-                                    }
-                                    i++;
-                                }
+                                Log.i(GraphActivity.TAG, "Updating View with Data for this Routine");
+                                mBestStreak.setText(dataSnapshot.child("best_streak").getValue().toString());
+                                mCurrentStreak.setText(dataSnapshot.child("current_streak").getValue().toString());
 
                                 // GraphActivity.setLabels(labels);
                                 //GraphActivity.addEntries(entries, ContextCompat.getColor(mContext, R.color.app_main));
@@ -209,7 +208,7 @@ public class GraphActivity extends Activity {
                 }
             });
 
-
+        //listView.performItemClick(listView.getChildAt(0), 0, listView.getAdapter().getItemId(0));
 
 
         //Graph initilization Code.

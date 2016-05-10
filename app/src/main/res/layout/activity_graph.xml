@@ -30,17 +30,26 @@
             android:layout_centerHorizontal="true"
             android:textColor="@color/black"
             android:id="@+id/text_view" />
-        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view"
+            android:gravity="center">
+         <RelativeLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:layout_weight="1">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Best Streak"
             android:id="@+id/best_streak_text"
-            android:layout_marginStart="34dp"
             android:textColor="@color/brown"
-            android:layout_centerInParent="true"
-            android:layout_alignTop="@+id/current_streak_text"
-            android:layout_alignStart="@+id/text_view" />
+            android:layout_below="@+id/best_streak_number"
+            android:layout_centerHorizontal="true"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,18 +58,24 @@
             android:id="@+id/best_streak_number"
             android:text="500"
             android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
-            android:layout_above="@+id/best_streak_text"
-            android:layout_alignStart="@+id/best_streak_text" />
+
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Current Streak"
             android:id="@+id/current_streak_text"
             android:textColor="@color/white"
-            android:layout_marginStart="73dp"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/best_streak_number" />
-
+            android:layout_below="@+id/current_streak_number"
+            android:layout_centerHorizontal="true" />
 
 
         <TextView
@@ -70,8 +85,10 @@
             android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
             android:id="@+id/current_streak_number"
             android:textColor="@color/white"
-            android:layout_alignTop="@+id/best_streak_number"
-            android:layout_alignStart="@+id/current_streak_text" />
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
     <TextView

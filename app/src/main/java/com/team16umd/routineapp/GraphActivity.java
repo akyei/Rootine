@@ -215,7 +215,6 @@ public class GraphActivity extends Activity {
                             mBestStreak.setText("No Data");
                             mCurrentStreak.setText("No Data");
 
-
                         } else {
                             Log.i(GraphActivity.TAG, "Updating View with Data for this Routine");
                             mBestStreak.setText(dataSnapshot.child("best_streak").getValue().toString());

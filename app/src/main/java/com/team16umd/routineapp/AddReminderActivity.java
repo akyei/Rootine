@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.firebase.client.AuthData;
@@ -121,7 +123,8 @@ public class AddReminderActivity extends Activity {
         } else {
             //TODO: Build and show a one button alert dialog that redirects user to login Activity
         }
-        //Button options = (Button) findViewById(R.id.top_bar);
+
+        ImageView options = (ImageView) findViewById(R.id.settings_button);
         Button submit = (Button) findViewById(R.id.submit_button);
         Button cancel = (Button) findViewById(R.id.cancel);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +153,7 @@ public class AddReminderActivity extends Activity {
         /*options.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                Log.i("Made it in options", "We outchea");
             }
         }); */
     }

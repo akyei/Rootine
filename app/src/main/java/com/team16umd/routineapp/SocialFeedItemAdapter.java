@@ -1,6 +1,7 @@
 package com.team16umd.routineapp;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -23,12 +24,20 @@ public class SocialFeedItemAdapter extends BaseAdapter {
     public int getCount(){
         return mSocialFeedItems.size();
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        ViewHolder holder = null;
-        View row = convertView;
-        return row;
+        if (convertView != null){
+            return convertView;
+        }
+        SocialFeedItem item = mSocialFeedItems.get(position);
+        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = mInflater.inflate(R.layout.anon_feed_item, parent);
+        ((TextView) v.findViewById(R.id.anon_feed_text)).setText(item.getMessage());
+
+        return v;
     }
+
 
     public void add(SocialFeedItem item){
         mSocialFeedItems.add(item);
@@ -45,9 +54,9 @@ public class SocialFeedItemAdapter extends BaseAdapter {
         return pos;
     }
 
-    private static class ViewHolder {
-        ProfilePictureView pictureView;
-        TextView usersName;
-        TextView feedText;
+    public void clear(){
+        mSocialFeedItems.clear();
+        notifyDataSetChanged();
     }
+
 }

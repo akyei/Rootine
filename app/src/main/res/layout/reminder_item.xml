@@ -3,6 +3,7 @@
     android:id="@+id/reminder_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="5dp"
     android:background="@color/white"
     android:descendantFocusability="blocksDescendants"
     >

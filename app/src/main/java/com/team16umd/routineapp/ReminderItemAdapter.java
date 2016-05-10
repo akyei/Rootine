@@ -170,6 +170,7 @@ public class ReminderItemAdapter extends BaseAdapter {
                             ReminderItemAdapter.this.add(item, false);
                         }
                     }
+
                 }
 
                 @Override

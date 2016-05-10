@@ -141,7 +141,8 @@ public class GraphActivity extends Activity {
 
                                 SharePhoto sp = shareItem(shareImage, "Check out my how great I've been doing!");
                                 ShareContent shareContent = new ShareMediaContent.Builder().addMedium(sp).build();
-                                shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+                                //shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+                                ShareDialog.show(GraphActivity.this, shareContent);
                                 /*Test*/
                                 /*AlertDialog.Builder share = new AlertDialog.Builder(v.getRootView().getContext());
                                 share.setTitle("Share With Your Friends on Facebook!");

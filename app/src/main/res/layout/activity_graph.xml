@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Routine Name"
+            android:text="Choose a Routine"
             android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -56,7 +56,7 @@
             android:inputType="number"
             android:textColor="@color/brown"
             android:id="@+id/best_streak_number"
-            android:text="500"
+            android:text="\?"
             android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
 
             android:layout_centerVertical="true"
@@ -81,7 +81,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="300"
+            android:text="\?"
             android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
             android:id="@+id/current_streak_number"
             android:textColor="@color/white"

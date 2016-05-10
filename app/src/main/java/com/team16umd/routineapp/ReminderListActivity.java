@@ -115,7 +115,7 @@ public class ReminderListActivity extends ListActivity {
 
 
         mPoints = (TextView) findViewById(R.id.points);
-        mBadgeButton = (Button) findViewById(R.id.badge_button);
+        mBadgeButton = (Button) findViewById(R.id.feed_button);
         //mSocialButton = (Button) findViewById(R.id.social_button);
         mHistoryButton = (Button) findViewById(R.id.graph_button);
 

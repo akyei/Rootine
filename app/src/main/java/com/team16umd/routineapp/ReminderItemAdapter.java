@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
@@ -50,7 +51,7 @@ public class ReminderItemAdapter extends BaseAdapter {
 
     public static final String TAG = "REMINDER_ITEM_ADAPTER";
     private final Context mContext;
-    private Firebase mFirebase;
+    private static Firebase mFirebase;
     private static Firebase mUserRef = null;
     private static Firebase mCompletedRef = null;
     private Firebase mRemindersRef = null;
@@ -168,7 +169,12 @@ public class ReminderItemAdapter extends BaseAdapter {
                             }
                             ReminderItemAdapter.this.add(item, false);
                         }
+                        if (uncheckAll){
+                            Toast toast = Toast.makeText(mContext, "It's a new day, your routines have been refreshed", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
                         uncheckAll = false;
+
                     }
 
                 }
@@ -371,6 +377,11 @@ public class ReminderItemAdapter extends BaseAdapter {
     public static void completeItem(ReminderItem item){
 
         Firebase itemRef = mUserRef.child("reminders").child(item.getReferenceId());
+
+        Firebase feedRef = new Firebase("https://routinereminder.firebaseio.com/feed");
+        Firebase pushRef = feedRef.push();
+        Log.i(ReminderItemAdapter.TAG, "pushRef");
+        pushRef.setValue(item.getmTitle());
         Firebase loginRef = mUserRef.child("login_info").child("last_completed");
         Firebase basicStats = mCompletedRef.child(item.getmTitle()).child("basic_stats");
         final Firebase history = mCompletedRef.child(item.getmTitle()).child("history");

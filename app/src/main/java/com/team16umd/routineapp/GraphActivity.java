@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -123,51 +125,76 @@ public class GraphActivity extends Activity {
                 ReminderItem reminderItem = (ReminderItem) adapterGraph.getAdapter().getItem(position);
                 Log.v("long clicked", "pos" + " " + position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
-                builder.setMessage("Title: " + reminderItem.getmTitle())
-                        .setTitle("Options")
-                        .setNegativeButton(R.string.progress, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                                //Share Button
-                        .setPositiveButton("Share", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.i(TAG, "Dialog Share");
-                                Bitmap shareImage = getBitmapFromView(mProgressView);
-                                dialog.dismiss();
+                boolean facebook_installed = false;
+                try {
+                    ApplicationInfo info = getPackageManager().getApplicationInfo("com.facebook.katana", 0);
+                    facebook_installed = true;
+                } catch (PackageManager.NameNotFoundException e){
+                    facebook_installed = false;
+                }
+                if (facebook_installed) {
+                    builder.setMessage("Title: " + reminderItem.getmTitle())
+                            .setTitle("Options")
+                            .setNegativeButton(R.string.progress, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            //Share Button
+                            .setPositiveButton("Share", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.i(TAG, "Dialog Share");
+                                    Bitmap shareImage = getBitmapFromView(mProgressView);
+                                    dialog.dismiss();
 
-                                SharePhoto sp = shareItem(shareImage, "Check out my how great I've been doing!");
-                                ShareContent shareContent = new ShareMediaContent.Builder().addMedium(sp).build();
-                                //shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
-                                ShareDialog.show(GraphActivity.this, shareContent);
+                                    SharePhoto sp = shareItem(shareImage, "Check out my how great I've been doing!");
+                                    ShareContent shareContent = new ShareMediaContent.Builder().addMedium(sp).build();
+                                    if (shareDialog.canShow(shareContent, ShareDialog.Mode.NATIVE)) {
+                                        shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+                                    } else {
+                                        shareDialog.show(shareContent, ShareDialog.Mode.WEB);
+                                    }
 
-                                /*Test*/
-                                /*AlertDialog.Builder share = new AlertDialog.Builder(v.getRootView().getContext());
-                                share.setTitle("Share With Your Friends on Facebook!");
+                                    /*Test*/
+                                    /*AlertDialog.Builder share = new AlertDialog.Builder(v.getRootView().getContext());
+                                    share.setTitle("Share With Your Friends on Facebook!");
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
-                                builder.setTitle("Share Your Progress!");
-                                builder.setMessage("Upload to Facebook?");
-                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-                                    public void onClick(DialogInterface dialog, int which){
-                                        Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.five_day_streak);
-                                        SharePhoto photo = new SharePhoto.Builder()
-                                                .setBitmap(image)
-                                                .build();
-                                        SharePhotoContent content = new SharePhotoContent.Builder()
-                                                .addPhoto(photo)
-                                                .build();
-                                        ShareDialog share = new ShareDialog(this);
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
+                                    builder.setTitle("Share Your Progress!");
+                                    builder.setMessage("Upload to Facebook?");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                                        public void onClick(DialogInterface dialog, int which){
+                                            Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.five_day_streak);
+                                            SharePhoto photo = new SharePhoto.Builder()
+                                                    .setBitmap(image)
+                                                    .build();
+                                            SharePhotoContent content = new SharePhotoContent.Builder()
+                                                    .addPhoto(photo)
+                                                    .build();
+                                            ShareDialog share = new ShareDialog(this);
 
-                                /*End Test*/
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-                return true;
+                                    /*End Test*/
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
+                } else {
+                    builder.setMessage("Title: " + reminderItem.getmTitle())
+                            .setTitle("Options")
+                            .setNeutralButton(R.string.progress, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
+                }
             }
         });
 

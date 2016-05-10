@@ -16,7 +16,7 @@
     <string name="delete">Delete</string>
     <string name="uncheck">Uncheck Item</string>
     <string name="badge_button_text">View Badges</string>
-    <string name="social_button_text">Social Feed</string>
+    <string name="social_button_text">View Feed</string>
     <string name="graph_button_text">View Graph</string>
     <string name="share">Share</string>
     <string name="progress">View Progress</string>

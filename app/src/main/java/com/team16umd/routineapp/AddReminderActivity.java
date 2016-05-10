@@ -121,7 +121,7 @@ public class AddReminderActivity extends Activity {
         } else {
             //TODO: Build and show a one button alert dialog that redirects user to login Activity
         }
-        Button options = (Button) findViewById(R.id.top_bar);
+        //Button options = (Button) findViewById(R.id.top_bar);
         Button submit = (Button) findViewById(R.id.submit_button);
         Button cancel = (Button) findViewById(R.id.cancel);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -147,12 +147,12 @@ public class AddReminderActivity extends Activity {
                 finish();
             }
         }));
-        options.setOnClickListener(new View.OnClickListener(){
+        /*options.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
 
             }
-        });
+        }); */
     }
 
     /*

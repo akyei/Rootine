@@ -7,17 +7,15 @@ import java.util.Date;
  */
 public class SocialFeedItem {
 
-    private String mUid;
     private String mFeedMessage;
-    private Date mTimestamp;
 
 
-    public SocialFeedItem(String uid, String feedMessage, Date timestamp){
-        this.mUid = uid;
+    public SocialFeedItem(String feedMessage){
         this.mFeedMessage = feedMessage;
-        this.mTimestamp = timestamp;
     }
 
-
+    public String getMessage(){
+        return mFeedMessage;
+    }
 
 }

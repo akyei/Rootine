@@ -165,10 +165,10 @@ public class ReminderItemAdapter extends BaseAdapter {
                                 uncheckAll();
                                 item.setmNightStatus(false);
                                 item.setmDayStatus(false);
-                                uncheckAll = false;
                             }
                             ReminderItemAdapter.this.add(item, false);
                         }
+                        uncheckAll = false;
                     }
                 }
 

@@ -137,7 +137,8 @@ public class GraphActivity extends Activity {
                             .setTitle("Options")
                             .setNegativeButton(R.string.progress, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
+                                    Log.i(TAG, "I AM USING MESSAGES");
+                                    Intent intent = new Intent(GraphActivity.this, ProgressActivity.class);
                                     startActivity(intent);
                                 }
                             })
@@ -186,7 +187,7 @@ public class GraphActivity extends Activity {
                             .setTitle("Options")
                             .setNeutralButton(R.string.progress, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
+                                    Intent intent = new Intent(GraphActivity.this, ProgressActivity.class);
                                     startActivity(intent);
                                 }
                             });

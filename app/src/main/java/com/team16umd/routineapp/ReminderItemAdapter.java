@@ -56,6 +56,8 @@ public class ReminderItemAdapter extends BaseAdapter {
     private static Firebase mCompletedRef = null;
     private Firebase mRemindersRef = null;
     private Firebase mLoginInfoRef = null;
+    private Firebase mGraphRef = null;
+    private String lastCompletedDay = "";
     private AuthData mAuthData;
     private String mUid;
     private long mCurrentStreak;
@@ -65,13 +67,25 @@ public class ReminderItemAdapter extends BaseAdapter {
     private Boolean uncheckAll = false;
     private final List<ReminderItem> mReminderItems = new ArrayList<>();
 
+
     public void delete(ReminderItem toRemove){
         mReminderItems.remove(toRemove);
     }
     public int getSize(){
         return mReminderItems.size();
     }
-    private void uncheckAll(){
+
+    private int getNumComplete(){
+        int i = 0;
+        for (ReminderItem item: mReminderItems){
+            if (item.getmDayStatus()){
+                i++;
+            }
+        }
+        return i;
+    }
+
+    private float uncheckAll(){
         Firebase ref = mUserRef.child("reminders");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -84,6 +98,7 @@ public class ReminderItemAdapter extends BaseAdapter {
                     mNight.getRef().setValue(false);
                     Log.i("Night false", "Night false");
                 }
+
             }
 
             @Override
@@ -92,14 +107,29 @@ public class ReminderItemAdapter extends BaseAdapter {
             }
 
         });
+        int total = 0, completed = 0;
         for (ReminderItem item: mReminderItems){
             Log.i("Inside unchecked for", "OK");
+            if (item.getmDayStatus()){
+                total++;
+            }
+            completed++;
             item.setmDayStatus(false);
             item.setmNightStatus(false);
         }
         notifyDataSetChanged();
+        return (float)completed/total;
     }
-
+    private void updateGraph(){
+        SimpleDateFormat d = new SimpleDateFormat("MM-dd-yyyy");
+        Firebase graphRef = mUserRef.child("graph").child(lastCompletedDay);
+        int complete = getNumComplete();
+        int total = mReminderItems.size();
+        Log.i(ReminderItemAdapter.TAG, "Complete: " + (float)complete+"\n" + "Total: " + (float)total);
+        if (total > 0){
+            graphRef.setValue((float) complete/total);
+        }
+    }
     public ReminderItemAdapter(Context context){
 
         Firebase.setAndroidContext(context);
@@ -115,6 +145,7 @@ public class ReminderItemAdapter extends BaseAdapter {
             mCompletedRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "completed/");
             mRemindersRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "reminders/");
             mLoginInfoRef = new Firebase(mContext.getResources().getString(R.string.firebase_url) + mUid + "/" + "login_info");
+            mGraphRef = mUserRef.child("graph");
 
             //Resets all reminders if it is a new day
             //NOT FINISHED
@@ -125,6 +156,7 @@ public class ReminderItemAdapter extends BaseAdapter {
                         if(child.getKey().equals("last_completed")){
                             Log.i(LoginActivity.TAG, "Inside on uncheck");
                             String lastCompleted = child.getValue().toString();
+                            lastCompletedDay = new String(lastCompleted);
                             SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy");
                             Date lastChecked = null;
                             try{
@@ -144,6 +176,7 @@ public class ReminderItemAdapter extends BaseAdapter {
                             if(c2.get(Calendar.DAY_OF_YEAR) > c1.get(Calendar.DAY_OF_YEAR)
                                     && c2.get(Calendar.YEAR) >= c1.get(Calendar.YEAR)){
                                 Log.i(LoginActivity.TAG, "Need to reset ");
+                                child.getRef().setValue(date.format(curr));
                                 //uncheckAll();
                                 uncheckAll = true;
                             }
@@ -162,18 +195,29 @@ public class ReminderItemAdapter extends BaseAdapter {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() != null) {
                         Log.i(LoginActivity.TAG, dataSnapshot.getValue().toString());
+                        float total = 0, complete = 0;
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             Log.i(LoginActivity.TAG, postSnapshot.getValue().toString());
                             ReminderItem item = postSnapshot.getValue(ReminderItem.class);
                             item.setReferenceId(postSnapshot.getKey());
                             if(uncheckAll == true){
-                                uncheckAll();
+                                //uncheckAll();
+                                if (item.getmDayStatus() || item.getmNightStatus()){
+                                    complete++;
+                                }
+                                total++;
                                 item.setmNightStatus(false);
                                 item.setmDayStatus(false);
                             }
                             ReminderItemAdapter.this.add(item, false);
                         }
+                        if (total > 0) {
+                            float ratio = complete / total;
+                            mGraphRef.push().setValue(ratio);
+                        }
                         if (uncheckAll){
+                            uncheckAll();
+                            //mGraphRef.push().setValue(ratio);
                             Toast toast = Toast.makeText(mContext, "It's a new day, your routines have been refreshed", Toast.LENGTH_LONG);
                             toast.show();
                         }
@@ -296,7 +340,9 @@ public class ReminderItemAdapter extends BaseAdapter {
                                         Log.i(TAG, "Unchecking Reminder(Day): "+reminderItem.getmTitle());
                                         //Change item from completed to incomplete in firebase and in Adapter
                                         mUserRef.child("reminders").child(reminderItem.getReferenceId()).child("mDayStatus").setValue(false);
+                                        mUserRef.child("reminders").child(reminderItem.getReferenceId()).child("mNightStatus").setValue(false);
                                         reminderItem.setmDayStatus(false);
+                                        reminderItem.setmNightStatus(false);
                                         //redraw list view
                                         notifyDataSetChanged();
                                         removePoint();
@@ -306,7 +352,9 @@ public class ReminderItemAdapter extends BaseAdapter {
                                     if (reminderItem.getmNightStatus()) {
                                         Log.i(TAG, "Unchecked Reminder(Day): "+reminderItem.getmTitle());
                                         mUserRef.child("reminders").child(reminderItem.getReferenceId()).child("mNightStatus").setValue(false);
+                                        mUserRef.child("reminders").child(reminderItem.getReferenceId()).child("mDayStatus").setValue(false);
                                         reminderItem.setmNightStatus(false);
+                                        reminderItem.setmDayStatus(false);
                                         //Redraw list view
                                         notifyDataSetChanged();
                                         removePoint();
@@ -362,6 +410,7 @@ public class ReminderItemAdapter extends BaseAdapter {
 
         Firebase itemRef = mUserRef.child("reminders").child(item.getReferenceId());
 
+
         Firebase feedRef = new Firebase("https://routinereminder.firebaseio.com/feed");
         Firebase pushRef = feedRef.push();
         Log.i(ReminderItemAdapter.TAG, "pushRef");
@@ -370,6 +419,10 @@ public class ReminderItemAdapter extends BaseAdapter {
         Firebase basicStats = mCompletedRef.child(item.getmTitle()).child("basic_stats");
         final Firebase history = mCompletedRef.child(item.getmTitle()).child("history");
         final SimpleDateFormat d2 = new SimpleDateFormat("MM-dd-yyyy");
+        String dateString = d2.format(new Date());
+        //Firebase graphRef = mUserRef.child("graph").child(dateString).child("total");
+        //Firebase graphRef2 = mUserRef.child("graph").child(dateString).child("num_completed");
+        //graphRef2.setValue(getNumComplete());
         loginRef.setValue(d2.format(new Date()));
         itemRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -380,8 +433,10 @@ public class ReminderItemAdapter extends BaseAdapter {
                     Calendar c = Calendar.getInstance();
                     if (c.get(Calendar.HOUR_OF_DAY) > 12){
                         mutableData.child("mNightStatus").setValue(true);
+                        mutableData.child("mDayStatus").setValue(true);
                     } else{
                         mutableData.child("mDayStatus").setValue(true);
+                        mutableData.child("mNightStatus").setValue(true);
                     }
                 }
                 return Transaction.success(mutableData);

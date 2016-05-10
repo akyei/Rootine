@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textAllCaps="false"
-        android:text="Placeholder Routine App"
+        android:text="Rootine"
         android:textColor="@color/logoColor"
         android:textSize="40dp"
         android:textAlignment="center"

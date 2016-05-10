@@ -3,12 +3,15 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/anon_feed_text"
-        android:textSize="20dp"
+        android:textSize="32dp"
         android:textColor="@color/black"
+        android:background="@color/white"
+        android:gravity="center"
         android:text="Lorem ipsum dolor est, place holder text ftw"
         />
 

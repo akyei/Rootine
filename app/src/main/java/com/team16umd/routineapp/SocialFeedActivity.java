@@ -2,10 +2,12 @@ package com.team16umd.routineapp;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ public class SocialFeedActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_feed);
         ListView listView = (ListView) findViewById(android.R.id.list);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -39,9 +42,19 @@ public class SocialFeedActivity extends ListActivity {
                 Log.i("TAG", "UPDATING LIST");
             }
         });
-                mFeedRef = new Firebase("https://routinereminder.firebaseio.com/feed");
+
+        mFeedRef = new Firebase("https://routinereminder.firebaseio.com/feed");
         TextView topBarText = (TextView) findViewById(R.id.top_bar_text);
-        topBarText.setText("Recently Completed Routines");
+        topBarText.setText("Community Feed");
+
+
+
+        View settingsButton = findViewById(R.id.settings_button);
+        ((ViewManager) settingsButton.getParent()).removeView(settingsButton);
+
+        View points = findViewById(R.id.points);
+        ((ViewManager) points.getParent()).removeView(points);
+
 
         mAdapter = new SocialFeedItemAdapter(getApplicationContext());
         recentReminders = getRecentlyCompletedReminders();
@@ -65,8 +78,8 @@ public class SocialFeedActivity extends ListActivity {
         //final ArrayList<String> result = new ArrayList<String>();
         mAdapter.clear();
         result.clear();
-        //TODO- get the last 10 recently completed reminders from Firebase
-        Query query = mFeedRef.limitToLast(10);
+        // get the last 20 recently completed reminders from Firebase
+        Query query = mFeedRef.limitToLast(20);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -67,7 +67,7 @@ public class SocialFeedActivity extends ListActivity {
 
     private void updateList(){
         mAdapter.clear();
-        for(int i = 0; i < recentReminders.size(); i++){
+        for(int i = recentReminders.size()-1; i >= 0; i--){
             mAdapter.add(new SocialFeedItem(result.get(i)));
             Log.i("HOLYMOLYIAMATAG", "ADDING ITEM TO ADAPTER");
         }

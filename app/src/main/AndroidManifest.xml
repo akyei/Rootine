@@ -51,9 +51,14 @@
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1697590047178624"
-            android:exported="true"></provider>
+            android:exported="true" />
 
-        <activity android:name=".ProgressActivity"></activity>
+        <activity android:name=".ProgressActivity" />
+
+        <service
+            android:name=".NotifyService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

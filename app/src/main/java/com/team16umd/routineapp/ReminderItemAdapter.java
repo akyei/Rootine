@@ -1,8 +1,11 @@
 package com.team16umd.routineapp;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,6 +22,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.internal.LockOnGetVariable;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -85,7 +89,44 @@ public class ReminderItemAdapter extends BaseAdapter {
         return i;
     }
 
+    private void queueReminder(){
+        Firebase notificationsRef = mUserRef.child("notifications");
+
+        notificationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String key = "48";
+                if (dataSnapshot.getChildren() == null){
+
+                } else {
+
+                    Long min = Long.MAX_VALUE;
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        if ((Long) snapshot.getValue() > min){
+                            min = (Long) snapshot.getValue();
+                            key = snapshot.getKey();
+                        }
+                    }
+                }
+                Intent myIntent = new Intent(mContext , NotifyService.class);
+                AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(mContext.ALARM_SERVICE);
+                PendingIntent pendingIntent = PendingIntent.getService(mContext, 0, myIntent, 0);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, ((Integer.parseInt(key)*15)/60));
+                calendar.set(Calendar.MINUTE, Integer.parseInt(key)*15 - 900);
+                calendar.set(Calendar.SECOND, 00);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
     private float uncheckAll(){
+        queueReminder();
         Firebase ref = mUserRef.child("reminders");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -409,8 +450,30 @@ public class ReminderItemAdapter extends BaseAdapter {
     public static void completeItem(ReminderItem item){
 
         Firebase itemRef = mUserRef.child("reminders").child(item.getReferenceId());
+        Calendar calendarInstance = Calendar.getInstance();
+        calendarInstance.setTime(new Date());
+        int currentMinute = calendarInstance.get(Calendar.MINUTE)+calendarInstance.get(Calendar.HOUR_OF_DAY)*60;
+        int bucket = currentMinute/15;
 
+        Firebase notificationsRef = mUserRef.child("notifications").child(String.valueOf(bucket));
+        notificationsRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                if (mutableData.getValue() == null){
+                    Log.d("MUTABLE DATA", "MUTABLE DATA IS NULL");
+                    mutableData.setValue(1);
+                } else {
+                    Log.d("MUTABLE DATA", "MUTABLE DATA IS NOT NULL");
+                    mutableData.setValue((Long) mutableData.getValue() + 1);
+                }
+                return Transaction.success(mutableData);
+            }
 
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
         Firebase feedRef = new Firebase("https://routinereminder.firebaseio.com/feed");
         Firebase pushRef = feedRef.push();
         Log.i(ReminderItemAdapter.TAG, "pushRef");
@@ -477,10 +540,10 @@ public class ReminderItemAdapter extends BaseAdapter {
                             Log.i("REMINDERLIST ACTIVITY", dataHash.get("last_completed").toString());
                             prev_date = d3.parse(dataHash.get("last_completed").toString());
                             c2.setTime(prev_date);
-                            Log.i("REMINDERLIST ACTIVITY", "Year of Yesterday: "+ c1.get(Calendar.YEAR) + "\nYear of last_completed: "+ c2.get(Calendar.YEAR)
+                            Log.i("REMINDERLIST ACTIVITY", "Year of Yesterday: " + c1.get(Calendar.YEAR) + "\nYear of last_completed: " + c2.get(Calendar.YEAR)
                                     + "\nDay of Yesterday: " + c1.get(Calendar.DAY_OF_YEAR) + "\nDay of last_completed: " + c2.get(Calendar.DAY_OF_YEAR));
                             if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
-                                    && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)){
+                                    && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)) {
                                 Log.i("REMINDERLIST ACTIVITY", "About to Streak");
                                 long new_streak = (Long) dataHash.get("current_streak") + 1;
                                 long best_streak = (Long) dataHash.get("best_streak");
@@ -491,6 +554,10 @@ public class ReminderItemAdapter extends BaseAdapter {
                                 outputHash.put("last_completed", d3.format(new Date()));
                                 current_streak = new_streak;
                                 currentData.setValue(outputHash);
+                            }else if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                                    && c1.get(Calendar.DAY_OF_YEAR)+1 == c2.get(Calendar.DAY_OF_YEAR)){
+                                current_streak = (Long) dataHash.get("current_streak");
+                                //do nothing
                             } else {
                                 outputHash.put("current_streak", 1);
                                 outputHash.put("best_streak", dataHash.get("best_streak"));

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/dark_gray"
     tools:context="com.team16umd.routineapp.GraphActivity">
 
     <include layout="@layout/topbar_layout"/>
@@ -14,7 +14,7 @@
         android:text="Your History"
         android:layout_gravity="center"
         android:textSize="40sp"
-        android:textColor="@color/brown"/>
+        android:textColor="@color/white"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -28,6 +28,7 @@
             android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:textColor="@color/black"
             android:id="@+id/text_view" />
         <LinearLayout
@@ -95,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select one of your Routines"
-        android:textColor="@color/brown"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_gravity="center"/>
 
@@ -104,8 +105,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@android:id/list"
-        android:divider="@color/light_brown"
-        android:dividerHeight="4dp"
+        android:padding="10dp"
+        android:divider="@color/dark_gray"
+        android:dividerHeight="15px"
         android:layout_weight="5"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Overall Progress"
+        android:id="@+id/progress_button"
+        android:textColor="@color/app_main"/>
 
 </LinearLayout>

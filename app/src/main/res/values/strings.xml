@@ -5,7 +5,7 @@
     <string name="fb_login_protocol_scheme">fb1697590047178624</string>
     <string name="title_activity_reminder_list">ReminderListActivity</string>
     <string name="firebase_url">https://routinereminder.firebaseio.com/users/</string>
-    <string name="add_habit_footer">+ Add a new habit!</string>
+    <string name="add_habit_footer">+ Add a new routine!</string>
     <string name="placeholder_text">(field not initialized)</string>
     <string name="description_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Nullam in consectetur metus. Maecenas bibendum ante nisl, et malesuada arcu iaculis nec.
@@ -17,7 +17,7 @@
     <string name="uncheck">Uncheck Item</string>
     <string name="badge_button_text">View Badges</string>
     <string name="social_button_text">View Feed</string>
-    <string name="graph_button_text">View Graph</string>
+    <string name="graph_button_text">View Progress</string>
     <string name="share">Share</string>
     <string name="progress">View Progress</string>
 </resources>

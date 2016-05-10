@@ -13,7 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -122,6 +124,8 @@ public class GraphActivity extends Activity {
         listView.setAdapter(new ReminderItemAdapterGraph(getApplicationContext()));
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> adapterGraph, View v, int position, long id) {
+                adapterGraph.getAdapter().getView(position, null, null).callOnClick();
+                adapterGraph.getAdapter().getView(position, null, null).performClick();
                 ReminderItem reminderItem = (ReminderItem) adapterGraph.getAdapter().getItem(position);
                 Log.v("long clicked", "pos" + " " + position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
@@ -135,13 +139,12 @@ public class GraphActivity extends Activity {
                 if (facebook_installed) {
                     builder.setMessage("Title: " + reminderItem.getmTitle())
                             .setTitle("Options")
-                            .setNegativeButton(R.string.progress, new DialogInterface.OnClickListener() {
+                            /*.setNegativeButton(R.string.progress, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Log.i(TAG, "I AM USING MESSAGES");
                                     Intent intent = new Intent(GraphActivity.this, ProgressActivity.class);
                                     startActivity(intent);
                                 }
-                            })
+                            })*/
                             //Share Button
                             .setPositiveButton("Share", new DialogInterface.OnClickListener() {
                                 @Override
@@ -152,11 +155,8 @@ public class GraphActivity extends Activity {
 
                                     SharePhoto sp = shareItem(shareImage, "Check out my how great I've been doing!");
                                     ShareContent shareContent = new ShareMediaContent.Builder().addMedium(sp).build();
-                                    if (shareDialog.canShow(shareContent, ShareDialog.Mode.NATIVE)) {
                                         shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
-                                    } else {
-                                        shareDialog.show(shareContent, ShareDialog.Mode.WEB);
-                                    }
+
 
                                     /*Test*/
                                     /*AlertDialog.Builder share = new AlertDialog.Builder(v.getRootView().getContext());
@@ -183,7 +183,7 @@ public class GraphActivity extends Activity {
                     alert.show();
                     return true;
                 } else {
-                    builder.setMessage("Title: " + reminderItem.getmTitle())
+                   /* builder.setMessage("Title: " + reminderItem.getmTitle())
                             .setTitle("Options")
                             .setNeutralButton(R.string.progress, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -193,7 +193,7 @@ public class GraphActivity extends Activity {
                             });
 
                     AlertDialog alert = builder.create();
-                    alert.show();
+                    alert.show(); */
                     return true;
                 }
             }
@@ -255,6 +255,22 @@ public class GraphActivity extends Activity {
         mLineChart.setDrawBorders(false);
         mLineChart.getXAxis().setTextSize(15f);*/
 
+        Button button = (Button) findViewById(R.id.progress_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(GraphActivity.this, ProgressActivity.class);
+                    startActivity(intent);
+            }
+        });
+        View settingsButton = findViewById(R.id.settings_button);
+        ((ViewManager) settingsButton.getParent()).removeView(settingsButton);
+
+        View points = findViewById(R.id.points);
+        TextView title = (TextView) findViewById(R.id.top_bar_text);
+        title.setText("Your Routine Progress");
+        ((ViewManager) points.getParent()).removeView(points);
+
         //Set points for User in top bar
         mPoints = (TextView) findViewById(R.id.points);
         mFirebase = new Firebase(getResources().getString(R.string.firebase_url));
@@ -268,7 +284,7 @@ public class GraphActivity extends Activity {
                         Log.w(TAG, "Couldn't find points for the logged in User, defaulting to 0");
                         mPoints.setText("0");
                     } else {
-                        mPoints.setText(dataSnapshot.getValue().toString());
+                        //mPoints.setText(dataSnapshot.getValue().toString());
                     }
                 }
 

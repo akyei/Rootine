@@ -20,7 +20,7 @@
         android:textAllCaps="false"
         android:text="Rootine"
         android:textColor="@color/logoColor"
-        android:textSize="40dp"
+        android:textSize="@dimen/com_facebook_profilepictureview_preset_size_small"
         android:textAlignment="center"
         android:fontFamily="sans-serif-light"
         android:layout_weight="4"/>

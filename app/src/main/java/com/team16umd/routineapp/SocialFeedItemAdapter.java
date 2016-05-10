@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.facebook.login.widget.ProfilePictureView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class SocialFeedItemAdapter extends BaseAdapter {
 
     public SocialFeedItemAdapter(Context context){
         mContext = context;
-        mSocialFeedItems = new ArrayList<>();
+        mSocialFeedItems = new LinkedList<>();
     }
     public int getCount(){
         return mSocialFeedItems.size();
@@ -42,7 +43,7 @@ public class SocialFeedItemAdapter extends BaseAdapter {
 
 
     public void add(SocialFeedItem item){
-        mSocialFeedItems.add(item);
+        mSocialFeedItems.add(0,item);
         notifyDataSetChanged();
     }
 

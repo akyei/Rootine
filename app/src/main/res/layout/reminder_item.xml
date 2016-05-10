@@ -27,6 +27,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="Small synopsis of reminder"
+        android:textSize="18sp"
         android:layout_below="@+id/reminder_item_text"
         android:layout_toStartOf="@+id/completion_status_icon"
         android:textColor="@color/black"

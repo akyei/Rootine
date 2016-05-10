@@ -1,6 +1,8 @@
 package com.team16umd.routineapp;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -87,6 +90,7 @@ public class ReminderListActivity extends ListActivity {
     private Button mBadgeButton, mSocialButton, mHistoryButton;
     private String mUid;
     private TextView mPoints;
+    private ImageView mSettingsView;
 
     private static final String FILE_NAME = "ReminderAppData.txt";
     // List Adapter for this class
@@ -118,6 +122,7 @@ public class ReminderListActivity extends ListActivity {
         mBadgeButton = (Button) findViewById(R.id.badge_button);
         //mSocialButton = (Button) findViewById(R.id.social_button);
         mHistoryButton = (Button) findViewById(R.id.graph_button);
+        mSettingsView = (ImageView) findViewById(R.id.settings_button);
 
         mBadgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +155,59 @@ public class ReminderListActivity extends ListActivity {
                 startActivityForResult(addRoutineIntent, ADD_REMINDER_REQUEST);
             }
         });
-
+        mSettingsView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                /*Make setting fragment*/
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
+                builder.setTitle("Options");
+                builder.setMessage("Select One");
+                builder.setPositiveButton("Check All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i = 0; i < mAdapter.getCount(); i++){
+                            ReminderItem temp = (ReminderItem) mAdapter.getItem(i);
+                            temp.setmNightStatus(true);
+                            temp.setmDayStatus(true);
+                            mAdapter.completeItem(temp);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Uncheck All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i = 0; i < mAdapter.getCount(); i++){
+                            ReminderItem temp = (ReminderItem) mAdapter.getItem(i);
+                            mUserRef.child("reminders").child(temp.getReferenceId()).child("mDayStatus").setValue(false);
+                            mUserRef.child("reminders").child(temp.getReferenceId()).child("mNightStatus").setValue(false);
+                            temp.setmNightStatus(false);
+                            temp.setmDayStatus(false);
+                            mAdapter.removePoint();
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNeutralButton("Delete All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int size = mAdapter.getSize();
+                        for(int i = mAdapter.getSize()-1; i >= 0; i--){
+                            Log.i("TEST***", mAdapter.toString());
+                            ReminderItem temp = (ReminderItem) mAdapter.getItem(i);
+                            //Delete reminder from firebase
+                            mUserRef.child("reminders").child(temp.getReferenceId()).removeValue();
+                            //remove item from adapter
+                            mAdapter.delete(temp);
+                        }
+                        //redraw ListView
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
         /*
             Creates reference to firebase (mFirebase) then gets an authentication
             token (mAuthData)
@@ -189,6 +246,7 @@ public class ReminderListActivity extends ListActivity {
             //DONE: Handle the case when token is invalid (i.e return to LoginActivity)
             finish();
         }
+
         mAdapter = new ReminderItemAdapter(getApplicationContext());
         getListView().setAdapter(mAdapter);
     }

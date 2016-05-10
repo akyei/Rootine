@@ -127,8 +127,9 @@ public class GraphActivity extends Activity {
                         .setTitle("Options")
                         .setNegativeButton(R.string.progress, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
-                                startActivity(intent);
+                                /*Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
+                                startActivity(intent);*/
+
                             }
                         })
                                 //Share Button
@@ -186,7 +187,6 @@ public class GraphActivity extends Activity {
                             Log.i(GraphActivity.TAG, "No Data for this Routine");
                             mBestStreak.setText("No Data");
                             mCurrentStreak.setText("No Data");
-
 
                         } else {
                             Log.i(GraphActivity.TAG, "Updating View with Data for this Routine");

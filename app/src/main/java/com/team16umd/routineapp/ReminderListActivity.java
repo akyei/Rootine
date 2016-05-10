@@ -105,7 +105,7 @@ public class ReminderListActivity extends ListActivity {
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         Firebase.setAndroidContext(this);
         TextView footerView;
-        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 12) {
+        if (true) {
             setContentView(R.layout.activity_reminder_list_night);
             getListView().setFooterDividersEnabled(true);
             footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view_night, null);
@@ -127,7 +127,7 @@ public class ReminderListActivity extends ListActivity {
         mBadgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ReminderListActivity.this, ViewBadgesActivity.class);
+                Intent intent = new Intent(ReminderListActivity.this, SocialFeedActivity.class);
                 startActivity(intent);
             }
         });

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.login.widget.ProfilePictureView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class SocialFeedItemAdapter extends BaseAdapter {
 
     public SocialFeedItemAdapter(Context context){
         mContext = context;
+        mSocialFeedItems = new ArrayList<>();
     }
     public int getCount(){
         return mSocialFeedItems.size();
@@ -32,7 +34,7 @@ public class SocialFeedItemAdapter extends BaseAdapter {
         }
         SocialFeedItem item = mSocialFeedItems.get(position);
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = mInflater.inflate(R.layout.anon_feed_item, parent);
+        View v = mInflater.from(mContext).inflate(R.layout.anon_feed_item, parent, false);
         ((TextView) v.findViewById(R.id.anon_feed_text)).setText(item.getMessage());
 
         return v;

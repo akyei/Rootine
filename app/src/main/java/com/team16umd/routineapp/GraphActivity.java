@@ -121,7 +121,7 @@ public class GraphActivity extends Activity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> adapterGraph, View v, int position, long id) {
                 ReminderItem reminderItem = (ReminderItem) adapterGraph.getAdapter().getItem(position);
-                Log.v("long clicked","pos"+" "+position);
+                Log.v("long clicked", "pos" + " " + position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
                 builder.setMessage("Title: " + reminderItem.getmTitle())
                         .setTitle("Options")
@@ -131,7 +131,7 @@ public class GraphActivity extends Activity {
                                 startActivity(intent);
                             }
                         })
-                        //Share Button
+                                //Share Button
                         .setPositiveButton("Share", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -141,7 +141,8 @@ public class GraphActivity extends Activity {
 
                                 SharePhoto sp = shareItem(shareImage, "Check out my how great I've been doing!");
                                 ShareContent shareContent = new ShareMediaContent.Builder().addMedium(sp).build();
-                                shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+                                ShareDialog.show(GraphActivity.this, shareContent);
+                                //shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
                                 /*Test*/
                                 /*AlertDialog.Builder share = new AlertDialog.Builder(v.getRootView().getContext());
                                 share.setTitle("Share With Your Friends on Facebook!");
@@ -172,41 +173,41 @@ public class GraphActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //DONE: open dialog box with option to delete or edit completion status
-                    //DONE: Implement Graphing Behavior
-                    ReminderItem reminderItem = (ReminderItem) parent.getAdapter().getItem(position);
-                    mRoutineTitle.setText(reminderItem.getmTitle());
-                    Firebase historyRef = mUserRef.child("completed").child(reminderItem.getmTitle()).child("basic_stats");
+                //DONE: open dialog box with option to delete or edit completion status
+                //DONE: Implement Graphing Behavior
+                ReminderItem reminderItem = (ReminderItem) parent.getAdapter().getItem(position);
+                mRoutineTitle.setText(reminderItem.getmTitle());
+                Firebase historyRef = mUserRef.child("completed").child(reminderItem.getmTitle()).child("basic_stats");
 
-                    historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() == null){
-                                Log.i(GraphActivity.TAG, "No Data for this Routine");
-                                mBestStreak.setText("No Data");
-                                mCurrentStreak.setText("No Data");
-
-
-                            } else {
-                                Log.i(GraphActivity.TAG, "Updating View with Data for this Routine");
-                                mBestStreak.setText(dataSnapshot.child("best_streak").getValue().toString());
-                                mCurrentStreak.setText(dataSnapshot.child("current_streak").getValue().toString());
-
-                                // GraphActivity.setLabels(labels);
-                                //GraphActivity.addEntries(entries, ContextCompat.getColor(mContext, R.color.app_main));
+                historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            Log.i(GraphActivity.TAG, "No Data for this Routine");
+                            mBestStreak.setText("No Data");
+                            mCurrentStreak.setText("No Data");
 
 
-                            }
-                        }
+                        } else {
+                            Log.i(GraphActivity.TAG, "Updating View with Data for this Routine");
+                            mBestStreak.setText(dataSnapshot.child("best_streak").getValue().toString());
+                            mCurrentStreak.setText(dataSnapshot.child("current_streak").getValue().toString());
 
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
+                            // GraphActivity.setLabels(labels);
+                            //GraphActivity.addEntries(entries, ContextCompat.getColor(mContext, R.color.app_main));
+
 
                         }
-                    });
+                    }
 
-                }
-            });
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+            }
+        });
 
         //listView.performItemClick(listView.getChildAt(0), 0, listView.getAdapter().getItemId(0));
 

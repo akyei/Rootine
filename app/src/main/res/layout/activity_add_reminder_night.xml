@@ -62,32 +62,6 @@
             android:id="@+id/notification_no"
             android:textColor="@color/app_main"/>
     </RadioGroup>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add to Social Feed"
-        android:textColor="@color/app_main"
-        />
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/feed_group"
-        >
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yes"
-            android:id="@+id/feed_yes"
-            android:textColor="@color/app_main"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No"
-            android:id="@+id/feed_no"
-            android:textColor="@color/app_main"/>
-    </RadioGroup>
     <Space
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

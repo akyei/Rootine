@@ -5,50 +5,18 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.facebook.login.widget.ProfilePictureView;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.text.ParseException;
-import java.util.Date;
 
 
  /*
@@ -87,7 +55,7 @@ public class ReminderListActivity extends ListActivity {
     private AuthData mAuthData;
     private Firebase mFirebase;
     private Firebase mUserRef;
-    private Button mBadgeButton, mSocialButton, mHistoryButton;
+    private Button mBadgesButton, mSocialButton, mHistoryButton;
     private String mUid;
     private TextView mPoints;
     private ImageView mSettingsView;
@@ -119,12 +87,12 @@ public class ReminderListActivity extends ListActivity {
 
 
         mPoints = (TextView) findViewById(R.id.points);
-        mBadgeButton = (Button) findViewById(R.id.feed_button);
+        mSocialButton = (Button) findViewById(R.id.feed_button);
         //mSocialButton = (Button) findViewById(R.id.social_button);
         mHistoryButton = (Button) findViewById(R.id.graph_button);
         mSettingsView = (ImageView) findViewById(R.id.settings_button);
 
-        mBadgeButton.setOnClickListener(new View.OnClickListener() {
+        mSocialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReminderListActivity.this, SocialFeedActivity.class);
